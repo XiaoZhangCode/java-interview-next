@@ -4,14 +4,27 @@ import {
   LogoutOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { ProLayout } from "@ant-design/pro-components";
+import dynamic from "next/dynamic";
 import { Dropdown, Input } from "antd";
 import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
+import { menus } from "../../../config/menu";
 import "./index.css";
+
+/**
+ * 解决 Warning: Prop `className` did not match
+ */
+const ProLayout = dynamic(
+  () => {
+    return import("@ant-design/pro-layout");
+  },
+  {
+    ssr: false, // 仅在客户端渲染
+  },
+);
 
 const SearchInput = () => {
   return (
@@ -68,7 +81,7 @@ export default function BasicLayout({ children }: Props) {
         }}
         token={{
           header: {
-            colorBgMenuItemSelected: 'rgba(0,0,0,0.04)',
+            colorBgMenuItemSelected: "rgba(0,0,0,0.04)",
           },
         }}
         avatarProps={{
@@ -96,8 +109,8 @@ export default function BasicLayout({ children }: Props) {
         actionsRender={(props) => {
           if (props.isMobile) return [];
           return [
-            props.layout !== 'side' && document.body.clientWidth > 1400 ? (
-                <SearchInput />
+            props.layout !== "side" ? (
+              <SearchInput key={"SearchInput"} />
             ) : undefined,
             <a href={"https://github.com/XiaoZhangCode"} key={"github"}>
               <GithubFilled key="GithubFilled" />,
@@ -116,20 +129,9 @@ export default function BasicLayout({ children }: Props) {
           return <GlobalFooter />;
         }}
         onMenuHeaderClick={(e) => console.log(e)}
-        menuDataRender={() => [
-          {
-            path: "/",
-            name: "首页",
-          },
-          {
-            path: "/question",
-            name: "题目",
-          },
-          {
-            path: "/banks",
-            name: "题库 ",
-          },
-        ]}
+        menuDataRender={() => {
+          return menus;
+        }}
         menuItemRender={(item, dom) => (
           <Link href={item.path || "/"} target={item.target}>
             {dom}

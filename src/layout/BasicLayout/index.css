@@ -4,6 +4,9 @@
 .ant-pro-layout-top {
     height: 100%;
 }
+.ant-pro-top-nav-header-main-left{
+    margin-right: 15px !important;
+}
 #basicLayout{
 
 }
