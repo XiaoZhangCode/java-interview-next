@@ -26,7 +26,7 @@ myAxios.interceptors.response.use(
     // 处理响应数据
     const { data } = response;
     // 未登录
-    if (data.code === 40100) {
+    if (data.code === 401) {
       // 不是获取用户信息接口，或者不是登录页面，则跳转到登录页面
       if (
         !response.request.responseURL.includes("user/get/login") &&

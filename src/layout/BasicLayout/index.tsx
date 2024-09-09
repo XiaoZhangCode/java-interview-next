@@ -13,6 +13,9 @@ import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import { menus } from "../../../config/menu";
 import "./index.css";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import loginUser from "@/stores/loginUser";
 
 /**
  * 解决 Warning: Prop `className` did not match
@@ -61,6 +64,8 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
+  let loginUser = useSelector((state: RootState) => state.loginUser);
+
   return (
     <div
       id="basicLayout"
@@ -85,11 +90,13 @@ export default function BasicLayout({ children }: Props) {
           },
         }}
         avatarProps={{
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+          src: loginUser.userAvatar || "/assets/notLoginUser.png",
           size: "small",
-          title: "小张",
+          title: loginUser.userName || "未登录",
           render: (props, dom) => {
-            return (
+            return loginUser.userName === "未登录" ? (
+              <div>{dom}</div>
+            ) : (
               <Dropdown
                 menu={{
                   items: [
