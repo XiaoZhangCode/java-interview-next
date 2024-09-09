@@ -8,6 +8,7 @@ import store, { AppDispatch } from "@/stores";
 import { getLoginUser } from "@/api/user";
 import { setLoginUser } from "@/stores/loginUser";
 import { usePathname } from "next/navigation";
+import AccessLayout from "@/access/AccessLayout";
 
 /**
  * 全局初始化组件
@@ -35,15 +36,15 @@ const InitLayout: React.FC<
       } else {
         // // 跳转到登录页面
         // window.location.href = "/user/login";
-        setTimeout(() => {
-          const testUser = {
-            userName: "codeZhang",
-            userProfile: "暂无简介",
-            userAvatar: "/assets/logo.png",
-            userRole: "admin",
-          };
-          dispatch(setLoginUser(testUser as API.LoginUserVO));
-        }, 3000);
+        // setTimeout(() => {
+        //   const testUser = {
+        //     userName: "codeZhang",
+        //     userProfile: "暂无简介",
+        //     userAvatar: "/assets/logo.png",
+        //     userRole: "admin",
+        //   };
+        //   dispatch(setLoginUser(testUser as API.LoginUserVO));
+        // }, 3000);
       }
     }
   }, []);
@@ -66,7 +67,9 @@ export default function RootLayout({
         <AntdRegistry>
           <Provider store={store}>
             <InitLayout>
-              <BasicLayout>{children}</BasicLayout>
+              <BasicLayout>
+                <AccessLayout>{children}</AccessLayout>
+              </BasicLayout>
             </InitLayout>
           </Provider>
         </AntdRegistry>

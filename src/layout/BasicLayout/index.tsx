@@ -1,21 +1,17 @@
 "use client";
-import {
-  GithubFilled,
-  LogoutOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import {GithubFilled, LogoutOutlined, SearchOutlined,} from "@ant-design/icons";
 import dynamic from "next/dynamic";
-import { Dropdown, Input } from "antd";
-import React from "react";
+import {Dropdown, Input} from "antd";
+import React, {useState} from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
-import { menus } from "../../../config/menu";
+import {menus} from "../../../config/menu";
 import "./index.css";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores";
-import loginUser from "@/stores/loginUser";
+import {useSelector} from "react-redux";
+import {RootState} from "@/stores";
+import getAccessibleMenuList from "@/access/menuAccess";
 
 /**
  * 解决 Warning: Prop `className` did not match
@@ -65,6 +61,8 @@ export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
   let loginUser = useSelector((state: RootState) => state.loginUser);
+
+  const [text, setText] = useState("");
 
   return (
     <div
@@ -137,7 +135,7 @@ export default function BasicLayout({ children }: Props) {
         }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenuList(loginUser, menus);
         }}
         menuItemRender={(item, dom) => (
           <Link href={item.path || "/"} target={item.target}>
