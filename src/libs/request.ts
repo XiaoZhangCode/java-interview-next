@@ -25,6 +25,9 @@ myAxios.interceptors.response.use(
   function (response) {
     // 处理响应数据
     const { data } = response;
+    if (data.code === 0) {
+      return response;
+    }
     // 未登录
     if (data.code === 401) {
       // 不是获取用户信息接口，或者不是登录页面，则跳转到登录页面
@@ -35,10 +38,11 @@ myAxios.interceptors.response.use(
         window.location.href = `/user/login?redirect=${window.location.href}`;
       }
     } else if (data.code !== 0) {
+      console.log(data);
       // 其他错误
-      throw new Error(data.message ?? "服务器错误");
+      throw new Error(data.msg ?? "服务器错误");
     }
-    return data;
+    return response;
   },
   // 非 2xx 响应触发
   function (error) {

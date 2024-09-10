@@ -542,6 +542,10 @@ declare namespace API {
     favourNum?: number;
   };
 
+  type resetUserPasswordParams = {
+    userId: number;
+  };
+
   type updateQuestionBank1Params = {
     /** 题目id */
     id: number;
@@ -585,14 +589,6 @@ declare namespace API {
     id?: number;
     /** 用户昵称 */
     userName?: string;
-    /** 用户角色 */
-    userRole?: string;
-    /** 创建时间 */
-    createTime?: string;
-    /** 开放平台id */
-    unionId?: string;
-    /** 公众号openId */
-    mpOpenId?: string;
   };
 
   type UserProfileUpdateReqDTO = {
@@ -666,5 +662,9 @@ declare namespace API {
     userRole?: string;
     /** 用户状态（0正常 1停用） */
     userStatus?: number;
+    /** 创建时间 */
+    createTime?: string;
+    /** 更新时间 */
+    updateTime?: string;
   };
 }

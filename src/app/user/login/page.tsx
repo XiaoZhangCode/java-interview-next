@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { LoginForm, ProForm, ProFormText } from "@ant-design/pro-components";
-import { message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useEmotionCss } from "@ant-design/use-emotion-css";
 import { useRouter } from "next/navigation";
@@ -12,6 +11,7 @@ import { setLoginUser } from "@/stores/loginUser";
 import { userLogin } from "@/api/user";
 import { useDispatch } from "react-redux";
 import "./index.css";
+import { message } from "antd";
 
 /**
  * 用户登录页面
@@ -40,15 +40,15 @@ const UserLoginPage: React.FC = () => {
   const doSubmit = async (values: any) => {
     try {
       const res = await userLogin(values);
-      if (res.data) {
-        message.success("登录成功！");
+      if (res.data.data) {
         // 保存用户登录态
-        dispatch(setLoginUser(res.data as API.LoginUserVO));
+        dispatch(setLoginUser(res.data.data as API.LoginUserVO));
+        message.success("登录成功！");
         router.replace("/");
         form.resetFields();
       }
     } catch (e: any) {
-      message.error("登录失败，" + e.message);
+      message.error(e.message);
     }
   };
 

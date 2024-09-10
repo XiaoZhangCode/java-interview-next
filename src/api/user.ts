@@ -116,6 +116,21 @@ export async function userRegister(body: API.UserRegisterReqDTO, options?: { [ke
   });
 }
 
+/** 重置用户登录密码 POST /user/reset/password */
+export async function resetUserPassword(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.resetUserPasswordParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/user/reset/password', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 更新用户信息 PUT /user/update */
 export async function updateUser(body: API.UserUpdateReqDTO, options?: { [key: string]: any }) {
   return request<API.CommonResultBoolean>('/user/update', {

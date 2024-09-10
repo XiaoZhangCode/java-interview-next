@@ -5,10 +5,10 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import dynamic from "next/dynamic";
-import { Dropdown, Input } from "antd";
-import React, { useState } from "react";
+import { Dropdown, Input, message } from "antd";
+import React from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import { menus } from "../../../config/menu";
@@ -16,6 +16,7 @@ import "./index.css";
 import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import getAccessibleMenuList from "@/access/menuAccess";
+import { logout } from "@/api/user";
 
 /**
  * 解决 Warning: Prop `className` did not match
@@ -63,9 +64,9 @@ interface Props {
 
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
 
   let loginUser = useSelector((state: RootState) => state.loginUser);
-  console.log("loginUser", loginUser);
 
   return (
     <div
@@ -96,7 +97,13 @@ export default function BasicLayout({ children }: Props) {
           title: loginUser.userName || "未登录",
           render: (props, dom) => {
             return !loginUser.id ? (
-              <div>{dom}</div>
+              <div
+                onClick={() => {
+                  router.replace("/user/login");
+                }}
+              >
+                {dom}
+              </div>
             ) : (
               <Dropdown
                 menu={{
@@ -105,6 +112,13 @@ export default function BasicLayout({ children }: Props) {
                       key: "logout",
                       icon: <LogoutOutlined />,
                       label: "退出登录",
+                      onClick: async () => {
+                        const result = await logout();
+                        if (result) {
+                          message.success("退出成功！");
+                          window.location.href = "/user/login";
+                        }
+                      },
                     },
                   ],
                 }}
