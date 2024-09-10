@@ -5,6 +5,7 @@ import { findAllMenuItemByPath } from "../../config/menu";
 import ACCESS_ENUM from "@/access/accessEnum";
 import { checkAccess } from "@/access/checkAccess";
 import Forbidden from "@/app/forbidden";
+import React from "react";
 
 /**
  * 全局初始化组件

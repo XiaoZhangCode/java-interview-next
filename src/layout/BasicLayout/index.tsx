@@ -1,16 +1,20 @@
 "use client";
-import {GithubFilled, LogoutOutlined, SearchOutlined,} from "@ant-design/icons";
+import {
+  GithubFilled,
+  LogoutOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import dynamic from "next/dynamic";
-import {Dropdown, Input} from "antd";
-import React, {useState} from "react";
+import { Dropdown, Input } from "antd";
+import React, { useState } from "react";
 import Image from "next/image";
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
-import {menus} from "../../../config/menu";
+import { menus } from "../../../config/menu";
 import "./index.css";
-import {useSelector} from "react-redux";
-import {RootState} from "@/stores";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
 import getAccessibleMenuList from "@/access/menuAccess";
 
 /**
@@ -61,8 +65,7 @@ export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
   let loginUser = useSelector((state: RootState) => state.loginUser);
-
-  const [text, setText] = useState("");
+  console.log("loginUser", loginUser);
 
   return (
     <div
@@ -74,7 +77,7 @@ export default function BasicLayout({ children }: Props) {
       }}
     >
       <ProLayout
-        title="面试刷题平台"
+        title="面试宝典"
         layout="top"
         logo={
           <Image src="/assets/logo.png" alt="logo" width={32} height={32} />
@@ -92,7 +95,7 @@ export default function BasicLayout({ children }: Props) {
           size: "small",
           title: loginUser.userName || "未登录",
           render: (props, dom) => {
-            return loginUser.userName === "未登录" ? (
+            return !loginUser.id ? (
               <div>{dom}</div>
             ) : (
               <Dropdown
@@ -117,8 +120,20 @@ export default function BasicLayout({ children }: Props) {
             props.layout !== "side" ? (
               <SearchInput key={"SearchInput"} />
             ) : undefined,
-            <a href={"https://github.com/XiaoZhangCode"} key={"github"}>
-              <GithubFilled key="GithubFilled" />,
+            <a
+              href={"https://github.com/XiaoZhangCode"}
+              target={"_blank"}
+              key={"github"}
+              style={{
+                width: "55px",
+                height: "55px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer !important",
+              }}
+            >
+              <GithubFilled key="GithubFilled" />
             </a>,
           ];
         }}

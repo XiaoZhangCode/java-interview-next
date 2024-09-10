@@ -1,14 +1,14 @@
 "use client";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import React, { useCallback, useEffect } from "react";
-import BasicLayout from "@/layout/BasicLayout";
+import {AntdRegistry} from "@ant-design/nextjs-registry";
+import React, {useCallback, useEffect} from "react";
 import "./globals.css";
-import { Provider, useDispatch } from "react-redux";
-import store, { AppDispatch } from "@/stores";
-import { getLoginUser } from "@/api/user";
-import { setLoginUser } from "@/stores/loginUser";
-import { usePathname } from "next/navigation";
+import {Provider, useDispatch} from "react-redux";
+import store, {AppDispatch} from "@/stores";
+import {getLoginUser} from "@/api/user";
+import {setLoginUser} from "@/stores/loginUser";
+import {usePathname} from "next/navigation";
 import AccessLayout from "@/access/AccessLayout";
+import FullLayout from "@/layout/FullLayout";
 
 /**
  * 全局初始化组件
@@ -25,26 +25,12 @@ const InitLayout: React.FC<
   // 全局初始化 函数
   const doInitLoginUser = useCallback(async () => {
     if (
-      !(
-        pathname.startsWith("user/login") &&
-        pathname.startsWith("/user/register")
-      )
+      !pathname.startsWith("/user/login") &&
+      !pathname.startsWith("/user/register")
     ) {
       const result = await getLoginUser();
       if (result.data) {
         dispatch(setLoginUser(result.data as API.LoginUserVO));
-      } else {
-        // // 跳转到登录页面
-        // window.location.href = "/user/login";
-        // setTimeout(() => {
-        //   const testUser = {
-        //     userName: "codeZhang",
-        //     userProfile: "暂无简介",
-        //     userAvatar: "/assets/logo.png",
-        //     userRole: "admin",
-        //   };
-        //   dispatch(setLoginUser(testUser as API.LoginUserVO));
-        // }, 3000);
       }
     }
   }, []);
@@ -67,9 +53,9 @@ export default function RootLayout({
         <AntdRegistry>
           <Provider store={store}>
             <InitLayout>
-              <BasicLayout>
+              <FullLayout>
                 <AccessLayout>{children}</AccessLayout>
-              </BasicLayout>
+              </FullLayout>
             </InitLayout>
           </Provider>
         </AntdRegistry>
