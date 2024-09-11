@@ -1,26 +1,26 @@
-import { updateUser } from "@/api/user";
 import { ProColumns, ProTable } from "@ant-design/pro-components";
 import { message, Modal } from "antd";
 import React, { useState } from "react";
 import PictureUploader from "@/components/PictureUploader";
+import { updateQuestionBank } from "@/api/questionBank";
 
 interface Props {
-  oldData?: API.UserVo;
+  oldData?: API.QuestionBankVo;
   visible: boolean;
-  columns: ProColumns<API.UserVo>[];
-  onSubmit: (values: API.UserAddReqDTO) => void;
+  columns: ProColumns<API.QuestionBankVo>[];
+  onSubmit: (values: API.QuestionBankAddReqDTO) => void;
   onCancel: () => void;
 }
 
 /**
- * 更新节点
+ * 审核
  *
  * @param fields
  */
-const handleUpdate = async (fields: API.UserUpdateReqDTO) => {
+const handleUpdate = async (fields: API.QuestionBankUpdateReqDTO) => {
   const hide = message.loading("正在更新");
   try {
-    await updateUser(fields);
+    await updateQuestionBank(fields);
     hide();
     message.success("更新成功");
     return true;
@@ -38,7 +38,7 @@ const handleUpdate = async (fields: API.UserUpdateReqDTO) => {
  */
 const UpdateModal: React.FC<Props> = (props) => {
   const { oldData, visible, columns, onSubmit, onCancel } = props;
-  const [userAvatar, setUserAvatar] = useState<string>("");
+  const [picture, setPicture] = useState<string>("");
 
   if (!oldData) {
     return <></>;
@@ -47,7 +47,7 @@ const UpdateModal: React.FC<Props> = (props) => {
   return (
     <Modal
       destroyOnClose
-      title={"更新"}
+      title={"审核"}
       open={visible}
       footer={null}
       onCancel={() => {
@@ -57,31 +57,42 @@ const UpdateModal: React.FC<Props> = (props) => {
       <ProTable
         type="form"
         columns={[
-          ...columns.filter((column) => column.dataIndex !== "userAvatar"),
           {
-            title: "头像",
-            dataIndex: "userAvatar",
-            valueType: "image",
-            fieldProps: {
-              width: 64,
+            title: "id",
+            dataIndex: "id",
+            valueType: "text",
+            hideInForm: true,
+          },
+          {
+            title: "审核状态",
+            dataIndex: "reviewStatus",
+            hideInForm: true,
+            valueEnum: {
+              0: {
+                text: "待审核",
+              },
+              1: {
+                text: "通过",
+              },
+              2: {
+                text: "拒绝",
+              },
             },
+          },
+          {
+            title: "审核信息",
+            sorter: true,
+            dataIndex: "reviewMessage",
+            valueType: "text",
             hideInSearch: true,
-            renderFormItem: (schema, options) => (
-              <PictureUploader
-                biz={"user_avatar"}
-                onChange={(url) => {
-                  setUserAvatar(url);
-                }}
-                value={userAvatar || oldData?.userAvatar}
-              />
-            ),
+            hideInForm: true,
           },
         ]}
         form={{
           initialValues: oldData,
         }}
-        onSubmit={async (values: API.UserUpdateReqDTO) => {
-          values.userAvatar = userAvatar;
+        onSubmit={async (values: API.QuestionBankUpdateReqDTO) => {
+          values.picture = picture;
           const success = await handleUpdate({
             ...values,
             id: oldData?.id as any,

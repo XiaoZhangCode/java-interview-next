@@ -1,5 +1,5 @@
 .GlobalFooter{
-    position: fixed;
+    position: absolute;
     bottom: 0;
     padding: 16px;
     text-align: center;

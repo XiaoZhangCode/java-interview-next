@@ -1,14 +1,14 @@
-import { updateUser } from "@/api/user";
 import { ProColumns, ProTable } from "@ant-design/pro-components";
 import { message, Modal } from "antd";
 import React, { useState } from "react";
 import PictureUploader from "@/components/PictureUploader";
+import { updateQuestionBank } from "@/api/questionBank";
 
 interface Props {
-  oldData?: API.UserVo;
+  oldData?: API.QuestionBankVo;
   visible: boolean;
-  columns: ProColumns<API.UserVo>[];
-  onSubmit: (values: API.UserAddReqDTO) => void;
+  columns: ProColumns<API.QuestionBankVo>[];
+  onSubmit: (values: API.QuestionBankAddReqDTO) => void;
   onCancel: () => void;
 }
 
@@ -17,10 +17,10 @@ interface Props {
  *
  * @param fields
  */
-const handleUpdate = async (fields: API.UserUpdateReqDTO) => {
+const handleUpdate = async (fields: API.QuestionBankUpdateReqDTO) => {
   const hide = message.loading("正在更新");
   try {
-    await updateUser(fields);
+    await updateQuestionBank(fields);
     hide();
     message.success("更新成功");
     return true;
@@ -38,7 +38,7 @@ const handleUpdate = async (fields: API.UserUpdateReqDTO) => {
  */
 const UpdateModal: React.FC<Props> = (props) => {
   const { oldData, visible, columns, onSubmit, onCancel } = props;
-  const [userAvatar, setUserAvatar] = useState<string>("");
+  const [picture, setPicture] = useState<string>("");
 
   if (!oldData) {
     return <></>;
@@ -57,10 +57,10 @@ const UpdateModal: React.FC<Props> = (props) => {
       <ProTable
         type="form"
         columns={[
-          ...columns.filter((column) => column.dataIndex !== "userAvatar"),
+          ...columns.filter((column) => column.dataIndex !== "picture"),
           {
-            title: "头像",
-            dataIndex: "userAvatar",
+            title: "图片",
+            dataIndex: "picture",
             valueType: "image",
             fieldProps: {
               width: 64,
@@ -70,9 +70,9 @@ const UpdateModal: React.FC<Props> = (props) => {
               <PictureUploader
                 biz={"user_avatar"}
                 onChange={(url) => {
-                  setUserAvatar(url);
+                  setPicture(url);
                 }}
-                value={userAvatar || oldData?.userAvatar}
+                value={picture || oldData?.picture}
               />
             ),
           },
@@ -80,8 +80,8 @@ const UpdateModal: React.FC<Props> = (props) => {
         form={{
           initialValues: oldData,
         }}
-        onSubmit={async (values: API.UserUpdateReqDTO) => {
-          values.userAvatar = userAvatar;
+        onSubmit={async (values: API.QuestionBankUpdateReqDTO) => {
+          values.picture = picture;
           const success = await handleUpdate({
             ...values,
             id: oldData?.id as any,

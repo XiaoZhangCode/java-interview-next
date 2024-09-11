@@ -1,40 +1,39 @@
 "use client";
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
-import {
-  deleteUser,
-  getUserPage,
-  resetUserPassword,
-} from "@/api/user";
+import { deleteQuestionBank, getQuestionBankPage } from "@/api/questionBank";
 import { PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Button, message, Modal, Space, Typography } from "antd";
 import React, { useRef, useState } from "react";
+import ReviewModal from "@/app/admin/bank/components/ReviewModal";
 
 /**
  * 用户管理页面
  *
  * @constructor
  */
-const UserAdminPage: React.FC = () => {
+const BankAdminPage: React.FC = () => {
   // 是否显示新建窗口
   const [createModalVisible, setCreateModalVisible] = useState<boolean>(false);
   // 是否显示更新窗口
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
+  // 是否显示审核窗口
+  const [reviewModalVisible, setReviewModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   // 当前用户点击的数据
-  const [currentRow, setCurrentRow] = useState<API.UserVo>();
+  const [currentRow, setCurrentRow] = useState<API.QuestionBankVo>();
 
   /**
    * 删除节点
    *
    * @param row
    */
-  const handleDelete = async (row: API.UserVo) => {
+  const handleDelete = async (row: API.QuestionBankVo) => {
     try {
       const confirmed = Modal.confirm({
-        title: `确认删除名为${row.userName}的用户吗？`,
+        title: `确认删除名为${row.title}的题库吗？`,
         content: "删除后不可恢复",
         okText: "确认",
         cancelText: "取消",
@@ -45,7 +44,7 @@ const UserAdminPage: React.FC = () => {
           const hide = message.loading("正在删除...");
           if (!row) return true;
           try {
-            await deleteUser({
+            await deleteQuestionBank({
               id: row.id as any,
             });
             hide();
@@ -73,51 +72,27 @@ const UserAdminPage: React.FC = () => {
     }
   };
 
-  const handleResetUserPassword = async (row: API.UserVo) => {
-    try {
-      const hide = message.loading("正在重置密码...");
-      if (!row) return true;
-      try {
-        await resetUserPassword({
-          userId: row.id as any,
-        });
-        hide();
-        message.success("重置成功,新密码为123456789");
-        actionRef.current?.reload();
-        return true;
-      } catch (error: any) {
-        hide();
-        message.error("重置密码失败：" + error.message);
-      }
-    } catch (error: any) {
-      message.error("重置密码操作出错：" + error.message);
-    }
-  };
-
-  /**
-   * 表格列配置
-   */
-  const columns: ProColumns<API.UserVo>[] = [
+  const columns: ProColumns<API.QuestionBankVo>[] = [
     {
-      title: "用户编号",
+      title: "id",
       dataIndex: "id",
       valueType: "text",
       hideInForm: true,
     },
     {
-      title: "账号",
-      dataIndex: "userAccount",
+      title: "标题",
+      dataIndex: "title",
+      valueType: "text",
+    },
+    {
+      title: "描述",
+      dataIndex: "description",
       valueType: "text",
       hideInSearch: true,
     },
     {
-      title: "用户名",
-      dataIndex: "userName",
-      valueType: "text",
-    },
-    {
-      title: "头像",
-      dataIndex: "userAvatar",
+      title: "图片",
+      dataIndex: "picture",
       valueType: "image",
       fieldProps: {
         width: 64,
@@ -125,26 +100,36 @@ const UserAdminPage: React.FC = () => {
       hideInSearch: true,
     },
     {
-      title: "简介",
-      dataIndex: "userProfile",
-      valueType: "textarea",
-      hideInSearch: true,
-    },
-    {
-      title: "权限",
-      dataIndex: "userRole",
-      hideInSearch: true,
+      title: "审核状态",
+      dataIndex: "reviewStatus",
+      hideInForm: true,
       valueEnum: {
-        user: {
-          text: "用户",
+        0: {
+          text: "待审核",
         },
-        admin: {
-          text: "管理员",
+        1: {
+          text: "通过",
         },
-        vip: {
-          text: "会员",
+        2: {
+          text: "拒绝",
         },
       },
+    },
+    {
+      title: "审核时间",
+      sorter: true,
+      dataIndex: "reviewTime",
+      valueType: "dateTime",
+      hideInSearch: true,
+      hideInForm: true,
+    },
+    {
+      title: "审核信息",
+      sorter: true,
+      dataIndex: "reviewMessage",
+      valueType: "text",
+      hideInSearch: true,
+      hideInForm: true,
     },
     {
       title: "创建时间",
@@ -162,6 +147,7 @@ const UserAdminPage: React.FC = () => {
       hideInSearch: true,
       hideInForm: true,
     },
+
     {
       title: "操作",
       dataIndex: "option",
@@ -177,11 +163,12 @@ const UserAdminPage: React.FC = () => {
             修改
           </Typography.Link>
           <Typography.Link
-            onClick={() => {
-              handleResetUserPassword(record);
-            }}
+              onClick={() => {
+                setCurrentRow(record);
+                setReviewModalVisible(true);
+              }}
           >
-            重置密码
+            审核
           </Typography.Link>
           <Typography.Link type="danger" onClick={() => handleDelete(record)}>
             删除
@@ -190,10 +177,11 @@ const UserAdminPage: React.FC = () => {
       ),
     },
   ];
+
   return (
     <PageContainer>
-      <ProTable<API.UserVo>
-        headerTitle={"用户信息"}
+      <ProTable<API.QuestionBankVo>
+        headerTitle={"题库信息"}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -214,13 +202,14 @@ const UserAdminPage: React.FC = () => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
 
-          const { data } = await getUserPage({
-            userPageReqDTO: {
+          const { data } = await getQuestionBankPage({
+            questionbankPageReqDTO: {
               pageNo: params.current || 1,
               pageSize: params.pageSize || 10,
-              userName: params.userName,
               id: params.id,
-            },
+              title: params.title,
+              reviewStatus: params.reviewStatus,
+            } as API.QuestionBankPageReqDTO,
           });
           return {
             success: data.code === 0,
@@ -254,7 +243,20 @@ const UserAdminPage: React.FC = () => {
           setUpdateModalVisible(false);
         }}
       />
+      <ReviewModal
+          visible={updateModalVisible}
+          columns={columns}
+          oldData={currentRow}
+          onSubmit={() => {
+            setReviewModalVisible(false);
+            setCurrentRow(undefined);
+            actionRef.current?.reload();
+          }}
+          onCancel={() => {
+            setReviewModalVisible(false);
+          }}
+      />
     </PageContainer>
   );
 };
-export default UserAdminPage;
+export default BankAdminPage;

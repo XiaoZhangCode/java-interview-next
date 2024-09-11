@@ -1,13 +1,13 @@
-import { addUser } from "@/api/user";
 import { ProColumns, ProTable } from "@ant-design/pro-components";
 import { message, Modal } from "antd";
 import React, { useState } from "react";
 import PictureUploader from "@/components/PictureUploader";
+import { addQuestionBank } from "@/api/questionBank";
 
 interface Props {
   visible: boolean;
-  columns: ProColumns<API.UserVo>[];
-  onSubmit: (values: API.UserAddReqDTO) => void;
+  columns: ProColumns<API.QuestionBankVo>[];
+  onSubmit: (values: API.QuestionBankAddReqDTO) => void;
   onCancel: () => void;
 }
 
@@ -15,10 +15,10 @@ interface Props {
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.UserAddReqDTO) => {
+const handleAdd = async (fields: API.QuestionBankAddReqDTO) => {
   const hide = message.loading("正在添加");
   try {
-    await addUser(fields);
+    await addQuestionBank(fields);
     hide();
     message.success("创建成功");
     return true;
@@ -37,7 +37,7 @@ const handleAdd = async (fields: API.UserAddReqDTO) => {
 const CreateModal: React.FC<Props> = (props) => {
   const { visible, columns, onSubmit, onCancel } = props;
 
-  const [userAvatar, setUserAvatar] = useState<string>("");
+  const [picture, setPicture] = useState<string>("");
 
   return (
     <Modal
@@ -52,10 +52,10 @@ const CreateModal: React.FC<Props> = (props) => {
       <ProTable
         type="form"
         columns={[
-          ...columns.filter((column) => column.dataIndex !== "userAvatar"),
+          ...columns.filter((column) => column.dataIndex !== "picture"),
           {
-            title: "头像",
-            dataIndex: "userAvatar",
+            title: "图片",
+            dataIndex: "picture",
             valueType: "image",
             fieldProps: {
               width: 64,
@@ -65,15 +65,15 @@ const CreateModal: React.FC<Props> = (props) => {
               <PictureUploader
                 biz={"user_avatar"}
                 onChange={(url) => {
-                  setUserAvatar(url);
+                  setPicture(url);
                 }}
-                value={userAvatar}
+                value={picture}
               />
             ),
           },
         ]}
-        onSubmit={async (values: API.UserAddReqDTO) => {
-          values.userAvatar = userAvatar;
+        onSubmit={async (values: API.QuestionBankAddReqDTO) => {
+          values.picture = picture;
           const success = await handleAdd(values);
           if (success) {
             onSubmit?.(values);
