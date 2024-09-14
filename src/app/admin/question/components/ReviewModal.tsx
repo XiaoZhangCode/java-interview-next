@@ -1,25 +1,25 @@
 import { ProColumns, ProTable } from "@ant-design/pro-components";
 import { message, Modal } from "antd";
 import React from "react";
-import { reviewQuestionBank } from "@/api/questionBank";
+import { reviewQuestion } from "@/api/question";
 
 interface Props {
-  oldData?: API.QuestionBankVo;
+  oldData?: API.QuestionVo;
   visible: boolean;
-  columns: ProColumns<API.QuestionBankVo>[];
-  onSubmit: (values: API.QuestionBankReviewReqDTO) => void;
+  columns: ProColumns<API.QuestionVo>[];
+  onSubmit: (values: API.QuestionReviewReqDTO) => void;
   onCancel: () => void;
 }
 
 /**
- * 审核
+ * 审核题目
  *
  * @param fields
  */
-const handleUpdate = async (fields: API.QuestionBankReviewReqDTO) => {
+const handleUpdate = async (fields: API.QuestionReviewReqDTO) => {
   const hide = message.loading("正在更新");
   try {
-    await reviewQuestionBank(fields);
+    await reviewQuestion(fields);
     hide();
     message.success("更新成功");
     return true;
@@ -37,8 +37,6 @@ const handleUpdate = async (fields: API.QuestionBankReviewReqDTO) => {
  */
 const ReviewModal: React.FC<Props> = (props) => {
   const { oldData, visible, columns, onSubmit, onCancel } = props;
-  console.log("oldData",oldData);
-  console.log("typeof oldData?.reviewStatus",typeof oldData?.reviewStatus);
   if (!oldData) {
     return <></>;
   }
@@ -66,17 +64,11 @@ const ReviewModal: React.FC<Props> = (props) => {
             title: "审核状态",
             dataIndex: "reviewStatus",
             valueEnum: {
-              0: {
-                text: "待审核",
-                status: "Default",
-              },
               1: {
                 text: "通过",
-                status: "Success",
               },
               2: {
                 text: "拒绝",
-                status: "Error",
               },
             },
           },
@@ -89,12 +81,9 @@ const ReviewModal: React.FC<Props> = (props) => {
           },
         ]}
         form={{
-          initialValues: {
-            ...oldData,
-            // reviewStatus:oldData.reviewStatus + ""
-          }
+          initialValues: oldData,
         }}
-        onSubmit={async (values: API.QuestionBankReviewReqDTO) => {
+        onSubmit={async (values: API.QuestionReviewReqDTO) => {
           const success = await handleUpdate({
             ...values,
             id: oldData?.id as any,

@@ -4,3 +4,6 @@
 .bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
     display: none;
 }
+.bytemd-fullscreen{
+    z-index: 1020 !important;
+}

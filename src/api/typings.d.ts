@@ -269,7 +269,7 @@ declare namespace API {
     /** 标题 */
     title: string;
     /** 内容 */
-    content: string;
+    content?: string;
     /** 标签列表 */
     tags: string[];
     /** 推荐答案 */
@@ -307,6 +307,15 @@ declare namespace API {
     priority?: number;
   };
 
+  type QuestionBankBatchReviewReqDTO = {
+    /** 审核状态：0-待审核, 1-通过, 2-拒绝 */
+    reviewStatus: number;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 题库id */
+    idList: number[];
+  };
+
   type QuestionBankPageReqDTO = {
     /** 页码，从 1 开始 */
     pageNo: number;
@@ -316,8 +325,6 @@ declare namespace API {
     id?: number;
     /** 标题 */
     title: string;
-    /** 描述 */
-    description: string;
     /** 状态：0-待审核, 1-通过, 2-拒绝 */
     reviewStatus?: number;
   };
@@ -389,6 +396,15 @@ declare namespace API {
     userId?: number;
   };
 
+  type QuestionBankReviewReqDTO = {
+    /** id */
+    id?: number;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 审核状态：0-待审核, 1-通过, 2-拒绝 */
+    reviewStatus?: number;
+  };
+
   type QuestionBankSimpleVo = {
     /** id */
     id?: number;
@@ -444,6 +460,33 @@ declare namespace API {
     priority?: number;
     /** 题目信息 */
     questionList?: QuestionVo[];
+    /** 审核状态 */
+    reviewStatus?: number;
+    /** 创建时间 */
+    createTime?: string;
+    /** 更新时间 */
+    updateTime?: string;
+    /** 审核时间 */
+    reviewTime: string;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 审核人 */
+    reviewer?: string;
+    /** 审核人id */
+    reviewerId?: number;
+    /** 创建人id */
+    creator?: string;
+    /** 创建人名称 */
+    creatorName?: string;
+  };
+
+  type QuestionBatchReviewReqDTO = {
+    /** 审核状态： 1-通过, 2-拒绝 */
+    reviewStatus: number;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 题目id */
+    idList: number[];
   };
 
   type QuestionPageReqDTO = {
@@ -455,22 +498,17 @@ declare namespace API {
     id?: number;
     /** 标题 */
     title: string;
-    /** 内容 */
-    content: string;
-    /** 标签列表（json 数组） */
+    /** 标签列表 */
     tags: string;
-    /** 推荐答案 */
-    answer: string;
-    /** 题目来源 */
-    source: string;
-    /** 仅会员可见（1 表示仅会员可见） */
-    needVip?: string;
-    /** 浏览量 */
-    viewNum?: number;
-    /** 点赞数 */
-    thumbNum?: number;
-    /** 收藏数 */
-    favourNum?: number;
+  };
+
+  type QuestionReviewReqDTO = {
+    /** id */
+    id?: number;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 审核状态：1-通过, 2-拒绝 */
+    reviewStatus?: number;
   };
 
   type QuestionSimpleVo = {
@@ -500,7 +538,7 @@ declare namespace API {
     /** 标题 */
     title: string;
     /** 内容 */
-    content: string;
+    content?: string;
     /** 标签列表 */
     tags: string[];
     /** 推荐答案 */
@@ -540,6 +578,20 @@ declare namespace API {
     thumbNum?: number;
     /** 收藏数 */
     favourNum?: number;
+    /** 审核状态 */
+    reviewStatus?: number;
+    /** 审核时间 */
+    reviewTime: string;
+    /** 审核信息 */
+    reviewMessage: string;
+    /** 审核人 */
+    reviewer?: string;
+    /** 审核人id */
+    reviewerId?: number;
+    /** 创建人id */
+    creator?: string;
+    /** 创建人名称 */
+    creatorName?: string;
   };
 
   type resetUserPasswordParams = {

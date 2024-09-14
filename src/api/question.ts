@@ -91,6 +91,36 @@ export async function getQuestionPage(
   });
 }
 
+/** 审核题目 POST /question/review */
+export async function reviewQuestion(
+  body: API.QuestionReviewReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/question/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 批量审核题目 POST /question/review/batch */
+export async function reviewQuestionBatch(
+  body: API.QuestionBatchReviewReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/question/review/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 更新题目信息 PUT /question/update */
 export async function updateQuestion(
   body: API.QuestionUpdateReqDTO,

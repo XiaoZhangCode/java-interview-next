@@ -79,6 +79,36 @@ export async function getQuestionBankPage(
   });
 }
 
+/** 审核题库 POST /questionBank/review */
+export async function reviewQuestionBank(
+  body: API.QuestionBankReviewReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/questionBank/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 批量审核题库 POST /questionBank/review/batch */
+export async function reviewQuestionBankBatch(
+  body: API.QuestionBankBatchReviewReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/questionBank/review/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 更新题库表信息 PUT /questionBank/update */
 export async function updateQuestionBank(
   body: API.QuestionBankUpdateReqDTO,
