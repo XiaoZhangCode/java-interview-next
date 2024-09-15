@@ -78,7 +78,9 @@ const UpdateModal: React.FC<Props> = (props) => {
           },
         ]}
         form={{
-          initialValues: oldData,
+          initialValues: {
+            ...oldData
+          },
         }}
         onSubmit={async (values: API.UserUpdateReqDTO) => {
           values.userAvatar = userAvatar;

@@ -50,6 +50,7 @@ const UpdateModal: React.FC<Props> = (props) => {
         top: 0,
         paddingBottom: 0,
         overflowY: "auto",
+        height: "100vh",
       }}
       width={"100vw"}
       destroyOnClose
@@ -65,7 +66,11 @@ const UpdateModal: React.FC<Props> = (props) => {
         type="form"
         columns={columns}
         form={{
-          initialValues: oldData,
+          initialValues: {
+            ...oldData,
+            // reviewStatus 是Number 类型 valueEnum 的key应该是字符串类型 否则渲染有问题
+            reviewStatus: oldData.reviewStatus + "",
+          },
         }}
         onSubmit={async (values: API.QuestionUpdateReqDTO) => {
           const success = await handleUpdate({

@@ -498,8 +498,8 @@ declare namespace API {
     id?: number;
     /** 标题 */
     title: string;
-    /** 标签列表 */
-    tags: string;
+    /** 审核状态 */
+    reviewStatus: number;
   };
 
   type QuestionReviewReqDTO = {
@@ -586,12 +586,18 @@ declare namespace API {
     reviewMessage: string;
     /** 审核人 */
     reviewer?: string;
+    /** 审核人头像 */
+    reviewerAvatar?: string;
+    /** 作者头像 */
+    authorAvatar?: string;
     /** 审核人id */
     reviewerId?: number;
     /** 创建人id */
     creator?: string;
     /** 创建人名称 */
     creatorName?: string;
+    /** 创建时间 */
+    createTime?: string;
   };
 
   type resetUserPasswordParams = {

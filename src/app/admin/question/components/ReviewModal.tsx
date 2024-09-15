@@ -64,6 +64,9 @@ const ReviewModal: React.FC<Props> = (props) => {
             title: "审核状态",
             dataIndex: "reviewStatus",
             valueEnum: {
+              0: {
+                text: "待审核",
+              },
               1: {
                 text: "通过",
               },
@@ -81,7 +84,11 @@ const ReviewModal: React.FC<Props> = (props) => {
           },
         ]}
         form={{
-          initialValues: oldData,
+          initialValues: {
+            ...oldData,
+            // reviewStatus 是Number 类型 valueEnum 的key应该是字符串类型 否则渲染有问题
+            reviewStatus:oldData.reviewStatus + ""
+          },
         }}
         onSubmit={async (values: API.QuestionReviewReqDTO) => {
           const success = await handleUpdate({

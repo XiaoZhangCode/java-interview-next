@@ -91,7 +91,8 @@ const ReviewModal: React.FC<Props> = (props) => {
         form={{
           initialValues: {
             ...oldData,
-            // reviewStatus:oldData.reviewStatus + ""
+            // reviewStatus 是Number 类型 valueEnum 的key应该是字符串类型 否则渲染有问题
+            reviewStatus:oldData.reviewStatus + ""
           }
         }}
         onSubmit={async (values: API.QuestionBankReviewReqDTO) => {

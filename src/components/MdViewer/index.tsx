@@ -3,13 +3,18 @@ import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import "bytemd/dist/index.css";
 import "highlight.js/styles/vs.css";
-import "./index.css";
+import { setTheme } from "bytemd-plugin-theme";
+import { useEffect } from "react";
 
 interface Props {
-    value?: string;
+  value?: string;
+  theme?: string;
 }
 
-const plugins = [gfm(), highlight()];
+const plugins = [
+  gfm(),
+  highlight(),
+];
 
 /**
  * Markdown 浏览器
@@ -17,13 +22,17 @@ const plugins = [gfm(), highlight()];
  * @constructor
  */
 const MdViewer = (props: Props) => {
-    const { value = "" } = props;
+  const { value = "", theme = "channing-cyan" } = props;
 
-    return (
-        <div className="md-viewer">
-            <Viewer value={value} plugins={plugins} />
-        </div>
-    );
+  useEffect(() => {
+    setTheme(theme);
+  }, [theme]);
+
+  return (
+    <div className="md-viewer">
+      <Viewer value={value} plugins={plugins} />
+    </div>
+  );
 };
 
 export default MdViewer;

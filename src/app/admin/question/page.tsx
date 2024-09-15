@@ -14,6 +14,7 @@ import CreateModal from "@/app/admin/question/components/CreateModal";
 import UpdateModal from "@/app/admin/question/components/UpdateModal";
 import MdEditor from "@/components/MdEditor";
 import ReviewModal from "@/app/admin/question/components/ReviewModal";
+import DetailModal from "@/app/admin/question/components/DetailModal";
 
 /**
  * 题目管理页面
@@ -32,10 +33,14 @@ const QuestionAdminPage: React.FC = () => {
   const [mySelectedRowKeys, setMySelectedRowKeys] = useState<React.Key[]>([]);
   const [reviewBatchModalVisible, setReviewBatchModalVisible] =
     useState<boolean>(false);
-  // 加载
+  // review组件加载
   const [loading, setLoading] = useState<boolean>(false);
   // 是否显示审核窗口
   const [reviewModalVisible, setReviewModalVisible] = useState<boolean>(false);
+  // detail组件显示
+  const [detailModalVisible, setDetailModalVisible] = useState<boolean>(false);
+  const [currentDetailId, setCurrentDetailId] = useState<string | number>(0);
+
   /**
    * 删除节点
    *
@@ -98,7 +103,7 @@ const QuestionAdminPage: React.FC = () => {
     {
       title: "标签",
       dataIndex: "tags",
-      hideInSearch:true,
+      hideInSearch: true,
       valueType: "select",
       fieldProps: {
         mode: "tags",
@@ -206,7 +211,7 @@ const QuestionAdminPage: React.FC = () => {
       dataIndex: "source",
       valueType: "text",
       hideInSearch: true,
-      hideInForm:true
+      hideInForm: true,
     },
     {
       title: "答案",
@@ -241,8 +246,8 @@ const QuestionAdminPage: React.FC = () => {
         <Space size="middle">
           <Typography.Link
             onClick={() => {
-              setCurrentRow(record);
-              setUpdateModalVisible(true);
+              setDetailModalVisible(true);
+              setCurrentDetailId(record.id as number);
             }}
           >
             详情
@@ -315,7 +320,6 @@ const QuestionAdminPage: React.FC = () => {
               pageNo: params.current || 1,
               pageSize: params.pageSize || 10,
             } as API.QuestionPageReqDTO,
-
           });
           return {
             success: data.code === 0,
@@ -410,6 +414,11 @@ const QuestionAdminPage: React.FC = () => {
           }}
         />
       </Modal>
+      <DetailModal
+        id={currentDetailId}
+        visible={detailModalVisible}
+        onCancel={() => setDetailModalVisible(false)}
+      />
     </PageContainer>
   );
 };
