@@ -19,7 +19,7 @@ export default function FullLayout({ children }: Props) {
     return (
       <div
         id="fullLayout"
-        className={"fullLayout"}
+        className="fullLayout"
         style={{
           height: "100vh",
           overflow: "auto",

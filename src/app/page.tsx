@@ -23,7 +23,6 @@ export default async function HomePage() {
                 pageNo: 1,
             },
         });
-        console.log(result)
         questionBankList = result.data?.data?.list ?? [];
     } catch (error: any) {
         console.error("获取题库列表失败，", error);

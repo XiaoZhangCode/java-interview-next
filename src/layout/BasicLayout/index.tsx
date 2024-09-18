@@ -1,4 +1,3 @@
-"use client";
 import {
   GithubFilled,
   LogoutOutlined,
@@ -17,18 +16,19 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/stores";
 import getAccessibleMenuList from "@/access/menuAccess";
 import { logout } from "@/api/user";
+import {ProLayout} from "@ant-design/pro-layout";
 
 /**
  * 解决 Warning: Prop `className` did not match
  */
-const ProLayout = dynamic(
-  () => {
-    return import("@ant-design/pro-layout");
-  },
-  {
-    ssr: false, // 仅在客户端渲染
-  },
-);
+// const ProLayout = dynamic(
+//   () => {
+//     return import("@ant-design/pro-layout");
+//   },
+//   {
+//     ssr: true, // 仅在服务端渲染
+//   },
+// );
 
 const SearchInput = () => {
   return (
@@ -70,7 +70,7 @@ export default function BasicLayout({ children }: Props) {
   return (
     <div
       id="basicLayout"
-      className={"basicLayout"}
+      className="basicLayout"
       style={{
         height: "100vh",
         overflow: "auto",
