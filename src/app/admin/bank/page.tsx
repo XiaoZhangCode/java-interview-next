@@ -239,7 +239,7 @@ const BankAdminPage: React.FC = () => {
           const sortOrder = sort?.[sortField] ?? undefined;
 
           const { data } = await getQuestionBankPage({
-            questionbankPageReqDTO: {
+            questionBankPageReqDTO: {
               pageNo: params.current || 1,
               pageSize: params.pageSize || 10,
               id: params.id,

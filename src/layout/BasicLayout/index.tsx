@@ -67,7 +67,6 @@ export default function BasicLayout({ children }: Props) {
   const router = useRouter();
 
   let loginUser = useSelector((state: RootState) => state.loginUser);
-
   return (
     <div
       id="basicLayout"

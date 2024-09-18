@@ -160,7 +160,7 @@ declare namespace API {
   };
 
   type getQuestionBankPageParams = {
-    questionbankPageReqDTO: QuestionBankPageReqDTO;
+    questionBankPageReqDTO: QuestionBankPageReqDTO;
   };
 
   type getQuestionBankParams = {
@@ -215,6 +215,14 @@ declare namespace API {
     id: number;
   };
 
+  type getUserQuestionBankPageParams = {
+    pageParam: PageParam;
+  };
+
+  type getUserQuestionPageParams = {
+    pageParam: PageParam;
+  };
+
   type getUserVOParams = {
     /** 用户ID */
     id: number;
@@ -235,6 +243,13 @@ declare namespace API {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+  };
+
+  type PageParam = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
   };
 
   type PageResultQuestionBankQuestionVo = {
@@ -323,7 +338,6 @@ declare namespace API {
     pageSize: number;
     /** id */
     id?: number;
-    /** 标题 */
     title: string;
     /** 状态：0-待审核, 1-通过, 2-拒绝 */
     reviewStatus?: number;

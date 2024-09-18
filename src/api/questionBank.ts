@@ -72,8 +72,8 @@ export async function getQuestionBankPage(
     method: 'GET',
     params: {
       ...params,
-      questionbankPageReqDTO: undefined,
-      ...params['questionbankPageReqDTO'],
+      questionBankPageReqDTO: undefined,
+      ...params['questionBankPageReqDTO'],
     },
     ...(options || {}),
   });
@@ -120,6 +120,23 @@ export async function updateQuestionBank(
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 用户分页获取题库表列表 GET /questionBank/user/page */
+export async function getUserQuestionBankPage(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserQuestionBankPageParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultPageResultQuestionBankVo>('/questionBank/user/page', {
+    method: 'GET',
+    params: {
+      ...params,
+      pageParam: undefined,
+      ...params['pageParam'],
+    },
     ...(options || {}),
   });
 }

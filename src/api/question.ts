@@ -150,3 +150,20 @@ export async function updateQuestionBank1(
     ...(options || {}),
   });
 }
+
+/** 用户分页获取题目列表 GET /question/user/page */
+export async function getUserQuestionPage(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserQuestionPageParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultPageResultQuestionVo>('/question/user/page', {
+    method: 'GET',
+    params: {
+      ...params,
+      pageParam: undefined,
+      ...params['pageParam'],
+    },
+    ...(options || {}),
+  });
+}
