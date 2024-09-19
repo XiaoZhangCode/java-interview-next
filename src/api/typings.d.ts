@@ -220,7 +220,7 @@ declare namespace API {
   };
 
   type getUserQuestionPageParams = {
-    pageParam: PageParam;
+    UserQuestionPageReqDTO: UserQuestionPageReqDTO;
   };
 
   type getUserVOParams = {
@@ -670,6 +670,19 @@ declare namespace API {
     userAvatar?: string;
     /** 用户简介 */
     userProfile?: string;
+  };
+
+  type UserQuestionPageReqDTO = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
+    /** 标题 */
+    title?: string;
+    /** 是否仅会员可见 */
+    needVip?: number;
+    /** 标签 */
+    tag?: string;
   };
 
   type UserRegisterReqDTO = {

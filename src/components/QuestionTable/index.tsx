@@ -9,6 +9,7 @@ import { Tag } from "antd";
 interface Props {
   defaultQuestionList?: API.QuestionVo[];
   defaultTotal: number;
+  defaultSearchParams?: API.UserQuestionPageReqDTO;
 }
 
 /**
@@ -17,7 +18,7 @@ interface Props {
  * @constructor
  */
 const QuestionTable = (props: Props) => {
-  const { defaultQuestionList, defaultTotal } = props;
+  const { defaultQuestionList, defaultTotal, defaultSearchParams } = props;
 
   const [questionList, setQuestionList] = useState<API.QuestionVo[]>(
     defaultQuestionList ?? [],
@@ -26,7 +27,6 @@ const QuestionTable = (props: Props) => {
   const [total, setTotal] = useState<number>(defaultTotal);
 
   const [init, setInit] = useState<boolean>(true);
-
 
   const columns: ProColumns<API.QuestionVo>[] = [
     {
@@ -85,19 +85,22 @@ const QuestionTable = (props: Props) => {
           pageSize: 12,
           total,
         }}
+        form={{
+          initialValues: defaultSearchParams,
+        }}
         dataSource={questionList}
         // @ts-ignore
         request={async (params, sort, filter) => {
-          if(init){
+          if (init) {
             setInit(false);
-            if(defaultQuestionList&&defaultTotal){
-              return ;
+            if (defaultQuestionList && defaultTotal) {
+              return;
             }
           }
 
           const sortField = Object.keys(sort)?.[0];
           const { data } = await getUserQuestionPage({
-            pageParam: {
+            UserQuestionPageReqDTO: {
               pageNo: params.current || 1,
               pageSize: params.pageSize || 12,
             },

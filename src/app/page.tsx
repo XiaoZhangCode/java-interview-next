@@ -30,7 +30,7 @@ export default async function HomePage() {
 
     try {
         let result = await getUserQuestionPage({
-            pageParam: {
+            UserQuestionPageReqDTO: {
                 pageSize: 12,
                 pageNo: 1,
             } as API.QuestionPageReqDTO,

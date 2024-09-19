@@ -17,6 +17,7 @@ import { RootState } from "@/stores";
 import getAccessibleMenuList from "@/access/menuAccess";
 import { logout } from "@/api/user";
 import {ProLayout} from "@ant-design/pro-layout";
+import SearchInput from "@/layout/BasicLayout/components/SearchInput";
 
 /**
  * 解决 Warning: Prop `className` did not match
@@ -30,33 +31,7 @@ import {ProLayout} from "@ant-design/pro-layout";
 //   },
 // );
 
-const SearchInput = () => {
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-        }}
-        prefix={<SearchOutlined />}
-        placeholder="搜索题目"
-        variant="borderless"
-      />
-    </div>
-  );
-};
+
 
 interface Props {
   children: React.ReactNode;

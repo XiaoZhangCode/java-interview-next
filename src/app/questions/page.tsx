@@ -3,22 +3,26 @@ import Title from "antd/es/typography/Title";
 import QuestionTable from "@/components/QuestionTable";
 import { getUserQuestionPage } from "@/api/question";
 import QuestionVo = API.QuestionVo;
-import './index.css'
+import "./index.css";
+import UserQuestionPageReqDTO = API.UserQuestionPageReqDTO;
 
 /**
  * 题目管理页面
  *
  * @constructor
  */
-export default async function QuestionPage() {
+// @ts-ignore
+export default async function QuestionPage({ searchParams }) {
+  const { q: searchText } = searchParams;
   let questionList: QuestionVo[] = [];
   let total = 0;
 
   try {
     let questionPage = await getUserQuestionPage({
-      pageParam: {
+      UserQuestionPageReqDTO: {
         pageSize: 12,
         pageNo: 1,
+        title: searchText as string,
       },
     });
     questionList = questionPage.data.data?.list ?? [];
@@ -30,7 +34,15 @@ export default async function QuestionPage() {
   return (
     <div id="questionsPage" className="max-width-content">
       <Title level={3}>题目大全</Title>
-      <QuestionTable defaultQuestionList={questionList} defaultTotal={total} />
+      <QuestionTable
+        defaultQuestionList={questionList}
+        defaultTotal={total}
+        defaultSearchParams={
+          {
+            title: searchText as string,
+          } as UserQuestionPageReqDTO
+        }
+      />
     </div>
   );
 }

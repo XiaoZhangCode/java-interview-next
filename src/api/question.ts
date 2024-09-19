@@ -161,8 +161,8 @@ export async function getUserQuestionPage(
     method: 'GET',
     params: {
       ...params,
-      pageParam: undefined,
-      ...params['pageParam'],
+      UserQuestionPageReqDTO: undefined,
+      ...params['UserQuestionPageReqDTO'],
     },
     ...(options || {}),
   });
