@@ -1,12 +1,15 @@
 "use client";
 import type { ProColumns } from "@ant-design/pro-components";
 import { ProTable } from "@ant-design/pro-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getUserQuestionPage } from "@/api/question";
 import TagList from "@/components/TagList/TagList";
-import { Tag } from "antd";
+import { Card, Tag } from "antd";
+import Link from "next/link";
 
 interface Props {
+  questionBankId?: number;
+  cardTitle?: React.ReactNode;
   defaultQuestionList?: API.QuestionVo[];
   defaultTotal: number;
   defaultSearchParams?: API.UserQuestionPageReqDTO;
@@ -18,8 +21,13 @@ interface Props {
  * @constructor
  */
 const QuestionTable = (props: Props) => {
-  const { defaultQuestionList, defaultTotal, defaultSearchParams } = props;
-
+  const {
+    defaultQuestionList,
+    defaultTotal,
+    defaultSearchParams,
+    cardTitle,
+    questionBankId,
+  } = props;
   const [questionList, setQuestionList] = useState<API.QuestionVo[]>(
     defaultQuestionList ?? [],
   );
@@ -28,11 +36,30 @@ const QuestionTable = (props: Props) => {
 
   const [init, setInit] = useState<boolean>(true);
 
+  useEffect(() => {
+    // 当 defaultQuestionList 或 defaultTotal 变化时，更新状态
+    setQuestionList(defaultQuestionList as API.QuestionVo[]);
+    setTotal(defaultTotal);
+  }, [defaultQuestionList, defaultTotal]); // 依赖项列表
+
   const columns: ProColumns<API.QuestionVo>[] = [
     {
       title: "标题",
       dataIndex: "title",
       valueType: "text",
+      render: (_, record) => {
+        return (
+          <Link
+            href={
+              questionBankId
+                ? `/bank/${questionBankId}/question/${record.id}`
+                : `/question/${record.id}`
+            }
+          >
+            {record.title}
+          </Link>
+        );
+      },
     },
     {
       title: "仅会员可见",
@@ -74,19 +101,17 @@ const QuestionTable = (props: Props) => {
   ];
 
   return (
-    <div className="questionTable" id="questionTable">
+    <Card className="questionTable" id="questionTable" title={cardTitle}>
       <ProTable<API.QuestionVo>
         rowKey="id"
         size={"large"}
         search={{
           labelWidth: 120,
+          filterType: "light",
         }}
         pagination={{
           pageSize: 12,
           total,
-        }}
-        form={{
-          initialValues: defaultSearchParams,
         }}
         dataSource={questionList}
         // @ts-ignore
@@ -103,6 +128,8 @@ const QuestionTable = (props: Props) => {
             UserQuestionPageReqDTO: {
               pageNo: params.current || 1,
               pageSize: params.pageSize || 12,
+              title: defaultSearchParams?.title,
+              questionBankId: defaultSearchParams?.questionBankId,
             },
           });
           setQuestionList(data.data?.list || []);
@@ -115,7 +142,7 @@ const QuestionTable = (props: Props) => {
         }}
         columns={columns}
       />
-    </div>
+    </Card>
   );
 };
 export default QuestionTable;

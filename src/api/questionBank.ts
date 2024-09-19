@@ -32,7 +32,7 @@ export async function deleteQuestionBank(
   });
 }
 
-/** 获取题库表 GET /questionBank/get */
+/** 获取题库简要表 GET /questionBank/get */
 export async function getQuestionBank(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getQuestionBankParams,
@@ -47,7 +47,7 @@ export async function getQuestionBank(
   });
 }
 
-/** 获取题库表简要信息 GET /questionBank/get/vo */
+/** 获取题库表信息 GET /questionBank/get/vo */
 export async function getQuestionBankVo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getQuestionBankVOParams,

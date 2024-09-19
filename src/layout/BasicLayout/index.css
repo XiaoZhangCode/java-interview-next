@@ -7,6 +7,10 @@
 .ant-pro-top-nav-header-main-left{
     margin-right: 15px !important;
 }
+.ant-pro-top-nav-header{
+    max-width: 1440px;
+    margin: 0 auto;
+}
 #basicLayout{
 
 }

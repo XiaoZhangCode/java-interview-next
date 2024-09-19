@@ -683,6 +683,8 @@ declare namespace API {
     needVip?: number;
     /** 标签 */
     tag?: string;
+    /** 题库id */
+    questionBankId?: number;
   };
 
   type UserRegisterReqDTO = {
