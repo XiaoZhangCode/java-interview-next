@@ -6,7 +6,7 @@ import "./index.css";
 import TagList from "@/components/TagList/TagList";
 
 interface Props {
-    question: API.QuestionVo;
+  question: API.QuestionVo;
 }
 
 /**
@@ -15,24 +15,24 @@ interface Props {
  * @constructor
  */
 const QuestionCard = (props: Props) => {
-    const { question } = props;
+  const { question } = props;
 
-    return (
-        <div className="question-card">
-            <Card bordered={false}>
-                <Title level={1} style={{ fontSize: 24 }}>
-                    {question.title}
-                </Title>
-                <TagList tagList={question.tags} />
-                <div style={{ marginBottom: 16 }} />
-                <MdViewer value={question.content} />
-            </Card>
-            <div style={{ marginBottom: 16 }} />
-            <Card title="推荐答案" bordered={false}>
-                <MdViewer value={question.answer} />
-            </Card>
-        </div>
-    );
+  return (
+    <div className="question-card">
+      <Card bordered={false}>
+        <Title level={1} style={{ fontSize: 24 }}>
+          {question.title}
+        </Title>
+        <TagList tagList={question.tags} />
+        <div style={{ marginBottom: 16 }} />
+        <MdViewer value={question.content} />
+      </Card>
+      <div style={{ marginBottom: 16 }} />
+      <Card title="推荐答案" bordered={false}>
+        <MdViewer value={question.answer} />
+      </Card>
+    </div>
+  );
 };
 
 export default QuestionCard;

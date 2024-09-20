@@ -81,7 +81,7 @@ const UpdateModal: React.FC<Props> = (props) => {
           initialValues: {
             ...oldData,
             // reviewStatus 是Number 类型 valueEnum 的key应该是字符串类型 否则渲染有问题
-            reviewStatus:oldData.reviewStatus + ""
+            reviewStatus: oldData.reviewStatus + "",
           },
         }}
         onSubmit={async (values: API.QuestionBankUpdateReqDTO) => {

@@ -1,21 +1,16 @@
-import {
-  GithubFilled,
-  LogoutOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import dynamic from "next/dynamic";
-import { Dropdown, Input, message } from "antd";
+import {GithubFilled, LogoutOutlined,} from "@ant-design/icons";
+import {Dropdown, message} from "antd";
 import React from "react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
-import { menus } from "../../../config/menu";
+import {menus} from "../../../config/menu";
 import "./index.css";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores";
+import {useSelector} from "react-redux";
+import {RootState} from "@/stores";
 import getAccessibleMenuList from "@/access/menuAccess";
-import { logout } from "@/api/user";
+import {logout} from "@/api/user";
 import {ProLayout} from "@ant-design/pro-layout";
 import SearchInput from "@/layout/BasicLayout/components/SearchInput";
 

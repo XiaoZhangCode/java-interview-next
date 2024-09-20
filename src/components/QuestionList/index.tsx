@@ -1,5 +1,5 @@
 "use client";
-import { Card, List, Tag } from "antd";
+import { Card, List } from "antd";
 import "./index.css";
 import Link from "next/link";
 import TagList from "@/components/TagList/TagList";

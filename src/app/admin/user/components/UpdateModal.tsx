@@ -79,7 +79,7 @@ const UpdateModal: React.FC<Props> = (props) => {
         ]}
         form={{
           initialValues: {
-            ...oldData
+            ...oldData,
           },
         }}
         onSubmit={async (values: API.UserUpdateReqDTO) => {

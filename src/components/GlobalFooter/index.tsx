@@ -9,7 +9,7 @@ export default function GlobalFooter() {
         <div>© {currentYear} 面试刷题平台</div>
         <div style={{ marginTop: "10px" }}>
           <a href="https://github.com/XiaoZhangCode">
-              作者: XiaoZhangCode  Github
+            作者: XiaoZhangCode Github
           </a>
         </div>
       </div>

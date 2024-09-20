@@ -11,10 +11,7 @@ interface Props {
   theme?: string;
 }
 
-const plugins = [
-  gfm(),
-  highlight(),
-];
+const plugins = [gfm(), highlight()];
 
 /**
  * Markdown 浏览器

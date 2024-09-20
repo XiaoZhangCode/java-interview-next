@@ -7,6 +7,7 @@ import * as questionBankQuestion from './questionBankQuestion';
 import * as questionBank from './questionBank';
 import * as question from './question';
 import * as file from './file';
+
 export default {
   user,
   questionBankQuestion,

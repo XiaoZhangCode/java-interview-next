@@ -1,6 +1,6 @@
-import { MenuDataItem } from "@ant-design/pro-layout";
-import { menus } from "../../config/menu";
-import { checkAccess } from "@/access/checkAccess";
+import {MenuDataItem} from "@ant-design/pro-layout";
+import {menus} from "../../config/menu";
+import {checkAccess} from "@/access/checkAccess";
 
 /**
  * 获取当前用户可访问的菜单列表

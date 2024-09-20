@@ -1,8 +1,8 @@
 import React from "react";
 import { getUserQuestionPage } from "@/api/question";
-import QuestionVo = API.QuestionVo;
 import "./index.css";
 import SearchQuestion from "@/components/SearchQuestion/page";
+import QuestionVo = API.QuestionVo;
 
 /**
  * 题目搜索页面

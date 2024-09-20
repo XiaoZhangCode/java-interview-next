@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
-import { LoginForm, ProForm, ProFormText } from "@ant-design/pro-components";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { useEmotionCss } from "@ant-design/use-emotion-css";
-import { useRouter } from "next/navigation";
+import {LoginForm, ProForm, ProFormText} from "@ant-design/pro-components";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {useEmotionCss} from "@ant-design/use-emotion-css";
+import {useRouter} from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { AppDispatch } from "@/stores";
-import { setLoginUser } from "@/stores/loginUser";
-import { userLogin } from "@/api/user";
-import { useDispatch } from "react-redux";
+import {AppDispatch} from "@/stores";
+import {setLoginUser} from "@/stores/loginUser";
+import {userLogin} from "@/api/user";
+import {useDispatch} from "react-redux";
 import "./index.css";
-import { message } from "antd";
+import {message} from "antd";
 
 /**
  * 用户登录页面

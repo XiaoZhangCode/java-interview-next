@@ -6,8 +6,8 @@ import Paragraph from "antd/lib/typography/Paragraph";
 import "./index.css";
 import QuestionTable from "@/components/QuestionTable";
 import { getUserQuestionPage } from "@/api/question";
-import QuestionVo = API.QuestionVo;
 import { getQuestionBank } from "@/api/questionBank";
+import QuestionVo = API.QuestionVo;
 
 // @ts-ignore
 export default async function BankPage({ params }) {

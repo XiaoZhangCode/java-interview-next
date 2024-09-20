@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import QuestionTable from "@/components/QuestionTable";
 import "./index.css";
-import UserQuestionPageReqDTO = API.UserQuestionPageReqDTO;
 import Search from "antd/lib/input/Search";
 import { getUserQuestionPage } from "@/api/question";
+import UserQuestionPageReqDTO = API.UserQuestionPageReqDTO;
 import QuestionVo = API.QuestionVo;
 
 interface Props {

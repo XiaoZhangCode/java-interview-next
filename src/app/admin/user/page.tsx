@@ -1,16 +1,12 @@
 "use client";
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
-import {
-  deleteUser,
-  getUserPage,
-  resetUserPassword,
-} from "@/api/user";
-import { PlusOutlined } from "@ant-design/icons";
-import type { ActionType, ProColumns } from "@ant-design/pro-components";
-import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Modal, Space, Typography } from "antd";
-import React, { useRef, useState } from "react";
+import {deleteUser, getUserPage, resetUserPassword,} from "@/api/user";
+import {PlusOutlined} from "@ant-design/icons";
+import type {ActionType, ProColumns} from "@ant-design/pro-components";
+import {PageContainer, ProTable} from "@ant-design/pro-components";
+import {Button, message, Modal, Space, Typography} from "antd";
+import React, {useRef, useState} from "react";
 
 /**
  * 用户管理页面

@@ -1,14 +1,10 @@
 "use client";
-import { CheckSquareOutlined, PlusOutlined } from "@ant-design/icons";
-import type { ActionType, ProColumns } from "@ant-design/pro-components";
-import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Modal, Space, Typography } from "antd";
-import React, { useRef, useState } from "react";
-import {
-  deleteQuestion,
-  getQuestionPage,
-  reviewQuestionBatch,
-} from "@/api/question";
+import {CheckSquareOutlined, PlusOutlined} from "@ant-design/icons";
+import type {ActionType, ProColumns} from "@ant-design/pro-components";
+import {PageContainer, ProTable} from "@ant-design/pro-components";
+import {Button, message, Modal, Space, Typography} from "antd";
+import React, {useRef, useState} from "react";
+import {deleteQuestion, getQuestionPage, reviewQuestionBatch,} from "@/api/question";
 import TagList from "@/components/TagList/TagList";
 import CreateModal from "@/app/admin/question/components/CreateModal";
 import UpdateModal from "@/app/admin/question/components/UpdateModal";

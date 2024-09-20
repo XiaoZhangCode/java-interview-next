@@ -39,13 +39,13 @@ const CreateModal: React.FC<Props> = (props) => {
   return (
     <Modal
       style={{
-        width: '100vw',
-        maxWidth: '100vw',
-        top: 0 ,
-        paddingBottom: 0 ,
-        overflowY: 'auto'
+        width: "100vw",
+        maxWidth: "100vw",
+        top: 0,
+        paddingBottom: 0,
+        overflowY: "auto",
       }}
-      width={'100vw'}
+      width={"100vw"}
       destroyOnClose
       title={"创建"}
       open={visible}

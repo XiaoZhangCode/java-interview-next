@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { LoginForm, ProForm, ProFormText } from "@ant-design/pro-components";
-import { message } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import {LoginForm, ProForm, ProFormText} from "@ant-design/pro-components";
+import {message} from "antd";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import Image from "next/image";
 import "./index.css";
-import { userRegister } from "@/api/user";
-import { useEmotionCss } from "@ant-design/use-emotion-css";
+import {userRegister} from "@/api/user";
+import {useEmotionCss} from "@ant-design/use-emotion-css";
 
 /**
  * 用户注册页面

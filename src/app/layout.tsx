@@ -1,12 +1,12 @@
 "use client";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import React, { useCallback, useEffect } from "react";
+import {AntdRegistry} from "@ant-design/nextjs-registry";
+import React, {useCallback, useEffect} from "react";
 import "./globals.css";
-import { Provider, useDispatch } from "react-redux";
-import store, { AppDispatch } from "@/stores";
-import { getLoginUser } from "@/api/user";
-import { setLoginUser } from "@/stores/loginUser";
-import { usePathname } from "next/navigation";
+import {Provider, useDispatch} from "react-redux";
+import store, {AppDispatch} from "@/stores";
+import {getLoginUser} from "@/api/user";
+import {setLoginUser} from "@/stores/loginUser";
+import {usePathname} from "next/navigation";
 import AccessLayout from "@/access/AccessLayout";
 import FullLayout from "@/layout/FullLayout";
 

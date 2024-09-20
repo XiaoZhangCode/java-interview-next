@@ -1,16 +1,12 @@
 "use client";
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
-import {
-  deleteQuestionBank,
-  getQuestionBankPage,
-  reviewQuestionBankBatch,
-} from "@/api/questionBank";
-import { CheckSquareOutlined, PlusOutlined } from "@ant-design/icons";
-import type { ActionType, ProColumns } from "@ant-design/pro-components";
-import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Modal, Space, Typography } from "antd";
-import React, { useRef, useState } from "react";
+import {deleteQuestionBank, getQuestionBankPage, reviewQuestionBankBatch,} from "@/api/questionBank";
+import {CheckSquareOutlined, PlusOutlined} from "@ant-design/icons";
+import type {ActionType, ProColumns} from "@ant-design/pro-components";
+import {PageContainer, ProTable} from "@ant-design/pro-components";
+import {Button, message, Modal, Space, Typography} from "antd";
+import React, {useRef, useState} from "react";
 import ReviewModal from "@/app/admin/bank/components/ReviewModal";
 
 /**
