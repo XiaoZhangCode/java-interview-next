@@ -1,3 +1,6 @@
 .md-viewer{
 
 }
+.medium-zoom-image {
+    z-index: 9999999 !important;
+}

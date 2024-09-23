@@ -1,9 +1,15 @@
-.md-editor{
+.md-editor {
 
 }
+
 .bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
     display: none;
 }
-.bytemd-fullscreen{
+
+.bytemd-fullscreen {
     z-index: 1020 !important;
+}
+
+.medium-zoom-image {
+    z-index: 9999999 !important;
 }

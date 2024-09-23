@@ -3,11 +3,11 @@ import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import zhHans from "bytemd/locales/zh_Hans.json";
 import theme, { themeList } from "bytemd-plugin-theme";
+import mediumZoom from '@bytemd/plugin-medium-zoom';
 import "bytemd/dist/index.css";
 import "highlight.js/styles/vs.css";
 import "./index.css";
-import highLightPlugin from "bytemd-plugin-highlight";
-import { highlightList } from "bytemd-plugin-highlight";
+import { uploadFile } from "@/api/file";
 
 interface Props {
   value?: string;
@@ -21,9 +21,7 @@ const plugins = [
   theme({
     themeList,
   }),
-  highLightPlugin({
-    highLightList: highlightList,
-  }),
+  mediumZoom(),
 ];
 
 /**
@@ -43,6 +41,30 @@ const MdEditor = (props: Props) => {
         mode="split"
         plugins={plugins}
         onChange={onChange}
+        uploadImages={async (files: any) => {
+          let imgUrl = "";
+          const res = await uploadFile(
+            {
+              biz: "user_upload",
+            },
+            {},
+            files[0],
+          );
+          // @ts-ignore
+          if (res.data.code === 0) {
+            // @ts-ignore
+            imgUrl = res.data.data; // 这里是上传成功后，服务端返回的图片地址
+          } else {
+            console.log("图片上传失败");
+          }
+          console.log(res);
+          return [
+            {
+              title: files.map((i: any) => i.name),
+              url: imgUrl,
+            },
+          ];
+        }}
       />
     </div>
   );

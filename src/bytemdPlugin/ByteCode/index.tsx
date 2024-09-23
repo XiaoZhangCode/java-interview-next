@@ -2,6 +2,7 @@ import type { BytemdPlugin } from "bytemd";
 import hljs from "highlight.js";
 import ReactDOMServer from "react-dom/server";
 import "./index.css";
+import { message } from "antd";
 
 // 拷贝代码
 const copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
@@ -37,14 +38,22 @@ export const renderEle = function (code: HTMLElement, key: number) {
   let timeoutID: any = null; // 用于存储 setTimeout 的 ID
   const restoreText = () => {
     btn.innerHTML = "复制代码";
+    btn.disable = false;
   };
   const timeout = () => {
     timeoutID = setTimeout(restoreText, 3000); // 设置定时器，三秒后执行 restoreText 函数
   };
   btn.addEventListener("click", () => {
+    if (btn.disable) {
+      return;
+    }
     clearTimeout(timeoutID); // 清除之前的定时器
     copyToClipboard(code.innerText); // 执行复制操作
     btn.innerHTML = "Copied"; // 立即更改按钮文本
+    btn.disable = true;
+    message.success({
+      content: "复制成功",
+    });
     timeout(); // 设置新的定时器，三秒后恢复按钮文本
   });
 
@@ -112,8 +121,6 @@ export default function code(): BytemdPlugin {
       codes.forEach((code, key) => {
         renderEle(code, key);
       });
-    },
+    }
   };
 }
-
-
