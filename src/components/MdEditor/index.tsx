@@ -6,6 +6,8 @@ import theme, { themeList } from "bytemd-plugin-theme";
 import "bytemd/dist/index.css";
 import "highlight.js/styles/vs.css";
 import "./index.css";
+import highLightPlugin from "bytemd-plugin-highlight";
+import { highlightList } from "bytemd-plugin-highlight";
 
 interface Props {
   value?: string;
@@ -18,6 +20,9 @@ const plugins = [
   highlight(),
   theme({
     themeList,
+  }),
+  highLightPlugin({
+    highLightList: highlightList,
   }),
 ];
 

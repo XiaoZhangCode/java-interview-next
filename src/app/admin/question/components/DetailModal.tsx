@@ -7,6 +7,7 @@ import MdViewer from "@/components/MdViewer";
 import Image from "next/image";
 import { UserOutlined } from "@ant-design/icons";
 import { themeList } from "bytemd-plugin-theme";
+import { highlightList } from "bytemd-plugin-highlight";
 
 import moment from "moment";
 
@@ -237,7 +238,10 @@ const DetailModal: React.FC<Props> = (props) => {
                 }
                 bordered={true}
               >
-                <MdViewer value={questionDetail?.answer} theme={themeValue} />
+                <MdViewer
+                  value={questionDetail?.answer}
+                  theme={themeValue}
+                />
               </Card>
             </Col>
           </Row>
