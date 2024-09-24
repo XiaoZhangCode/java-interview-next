@@ -25,7 +25,7 @@ export default async function QuestionPage({ params }) {
   }
 
   return (
-    <div id="bankQuestionPage">
+    <div id="bankQuestionPage" className="max-width-content">
       <Flex gap={24}>
         <Content>
           <QuestionCard question={question as QuestionVo} />

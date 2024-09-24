@@ -242,7 +242,7 @@ const QuestionAdminPage: React.FC = () => {
       title: "操作",
       dataIndex: "option",
       valueType: "option",
-      render: (_, record) => (
+      render: (_, record, __, action) => (
         <Space size="middle">
           <Typography.Link
             onClick={() => {

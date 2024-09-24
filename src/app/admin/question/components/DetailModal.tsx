@@ -7,7 +7,6 @@ import MdViewer from "@/components/MdViewer";
 import Image from "next/image";
 import { UserOutlined } from "@ant-design/icons";
 import { themeList } from "bytemd-plugin-theme";
-import { highlightList } from "bytemd-plugin-highlight";
 
 import moment from "moment";
 
