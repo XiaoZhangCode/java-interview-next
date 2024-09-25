@@ -1,8 +1,22 @@
 "use client";
-import { CheckSquareOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckSquareOutlined,
+  DownOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Modal, Space, Typography } from "antd";
+import {
+  Button,
+  Dropdown,
+  MenuProps,
+  message,
+  Modal,
+  Select,
+  SelectProps,
+  Space,
+  Typography,
+} from "antd";
 import React, { useRef, useState } from "react";
 import {
   deleteQuestion,
@@ -15,6 +29,41 @@ import UpdateModal from "@/app/admin/question/components/UpdateModal";
 import MdEditor from "@/components/MdEditor";
 import ReviewModal from "@/app/admin/question/components/ReviewModal";
 import DetailModal from "@/app/admin/question/components/DetailModal";
+import { searchQuestionBankList } from "@/api/questionBank";
+import QuestionBankVo = API.QuestionBankVo;
+import UpdateQuestionBanksModal from "@/app/admin/question/components/UpdateQuestionBanksModal";
+
+let timeout: ReturnType<typeof setTimeout> | null;
+let currentValue: string;
+
+const fetch = (value: string, callback: Function) => {
+  if (timeout) {
+    clearTimeout(timeout);
+    timeout = null;
+  }
+  currentValue = value;
+
+  const fake = async () => {
+    try {
+      const result = await searchQuestionBankList({
+        keyword: value,
+      } as API.searchQuestionBankListParams);
+      if (result.data.data ?? "") {
+        if (currentValue === value) {
+          const res = (result.data.data || []).map((item: QuestionBankVo) => ({
+            value: item.id,
+            text: item.title,
+          }));
+          callback(res);
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  timeout = setTimeout(fake, 300);
+};
 
 /**
  * 题目管理页面
@@ -39,7 +88,65 @@ const QuestionAdminPage: React.FC = () => {
   const [reviewModalVisible, setReviewModalVisible] = useState<boolean>(false);
   // detail组件显示
   const [detailModalVisible, setDetailModalVisible] = useState<boolean>(false);
-  const [currentDetailId, setCurrentDetailId] = useState<string | number>(0);
+  const [currentDetailId, setCurrentDetailId] = useState<string | number>("");
+
+  // 是否显示修改所属题库窗口
+  const [updateQuestionBanksModalVisible, setUpdateQuestionBanksModalVisible] = useState<boolean>(false);
+
+  // 题库信息
+  const [data, setData] = useState<SelectProps["options"]>([]);
+  const [value, setValue] = useState<string>();
+
+  // 搜索题库
+  const handleSearch = (newValue: string) => {
+    if (newValue) {
+      fetch(newValue, setData);
+    } else {
+      setData([]);
+    }
+  };
+  // 题库搜索词变化
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
+  };
+
+  enum MenuKey {
+    detail = "0",
+    checkStatus = "1",
+    bank = "2",
+  }
+
+  const handleMenuClick = (e: any, record: API.QuestionVo) => {
+    const { key } = e;
+    setCurrentRow(record);
+    switch (key) {
+      case MenuKey.checkStatus.valueOf():
+        setReviewModalVisible(true);
+        break;
+      case MenuKey.detail:
+        setCurrentDetailId(record.id as number)
+        setDetailModalVisible(true);
+        break;
+      case MenuKey.bank:
+        setUpdateQuestionBanksModalVisible(true);
+        break;
+    }
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      label: "详情",
+      key: MenuKey.detail,
+    },
+    {
+      label: "审核",
+      key: MenuKey.checkStatus,
+    },
+    {
+      label: "所属题库",
+      key: MenuKey.bank,
+    },
+  ];
 
   /**
    * 删除节点
@@ -99,6 +206,33 @@ const QuestionAdminPage: React.FC = () => {
       title: "标题",
       dataIndex: "title",
       valueType: "text",
+    },
+    {
+      title: "所属题库",
+      dataIndex: "questionBankId",
+      hideInTable: true,
+      hideInForm: true,
+      renderFormItem: () => {
+        return (
+          <Select
+            showSearch
+            value={value}
+            placeholder="请输入题库信息"
+            defaultActiveFirstOption={false}
+            filterOption={false}
+            onSearch={handleSearch}
+            onChange={handleChange}
+            allowClear={true}
+            notFoundContent={null}
+            options={(data || []).map((d) => {
+              return {
+                value: d.value,
+                label: d.text,
+              };
+            })}
+          />
+        );
+      },
     },
     {
       title: "标签",
@@ -246,22 +380,6 @@ const QuestionAdminPage: React.FC = () => {
         <Space size="middle">
           <Typography.Link
             onClick={() => {
-              setDetailModalVisible(true);
-              setCurrentDetailId(record.id as number);
-            }}
-          >
-            详情
-          </Typography.Link>
-          <Typography.Link
-            onClick={() => {
-              setCurrentRow(record);
-              setReviewModalVisible(true);
-            }}
-          >
-            审核
-          </Typography.Link>
-          <Typography.Link
-            onClick={() => {
               setCurrentRow(record);
               setUpdateModalVisible(true);
             }}
@@ -270,6 +388,17 @@ const QuestionAdminPage: React.FC = () => {
           </Typography.Link>
           <Typography.Link type="danger" onClick={() => handleDelete(record)}>
             删除
+          </Typography.Link>
+
+          <Typography.Link>
+            <Dropdown
+              menu={{ items, onClick: (e) => handleMenuClick(e, record) }}
+            >
+              <Space>
+                更多
+                <DownOutlined />
+              </Space>
+            </Dropdown>
           </Typography.Link>
         </Space>
       ),
@@ -284,6 +413,9 @@ const QuestionAdminPage: React.FC = () => {
         rowKey="id"
         search={{
           labelWidth: 120,
+        }}
+        onReset={() => {
+          setValue("");
         }}
         rowSelection={{
           selectedRowKeys: mySelectedRowKeys,
@@ -322,6 +454,7 @@ const QuestionAdminPage: React.FC = () => {
               ...params,
               pageNo: params.current || 1,
               pageSize: params.pageSize || 10,
+              questionBankId: value,
             } as API.QuestionPageReqDTO,
           });
           return {
@@ -411,6 +544,7 @@ const QuestionAdminPage: React.FC = () => {
             if (success) {
               setLoading(false);
               setMySelectedRowKeys([]);
+              setCurrentDetailId('')
               setReviewBatchModalVisible(false);
               actionRef.current?.reload();
             }
@@ -421,6 +555,15 @@ const QuestionAdminPage: React.FC = () => {
         id={currentDetailId}
         visible={detailModalVisible}
         onCancel={() => setDetailModalVisible(false)}
+      />
+
+      <UpdateQuestionBanksModal
+          questionId={currentRow?.id}
+          visible={updateQuestionBanksModalVisible}
+          onCancel={() => {
+            setCurrentRow(undefined)
+            setUpdateQuestionBanksModalVisible(false)
+          }}
       />
     </PageContainer>
   );

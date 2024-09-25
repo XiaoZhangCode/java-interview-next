@@ -59,6 +59,21 @@ export async function getQuestionVo(
   });
 }
 
+/** 根据题目id获取到关联到题库列表 GET /question/getQuestionBankIdList */
+export async function getQuestionBankIdList(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getQuestionBankIdListParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultListQuestionBankVo>('/question/getQuestionBankIdList', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 根据题库编号获取题目信息 GET /question/list */
 export async function getQuestionList(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

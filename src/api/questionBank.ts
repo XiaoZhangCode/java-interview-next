@@ -109,6 +109,21 @@ export async function reviewQuestionBankBatch(
   });
 }
 
+/** 根据关键词搜索题库 GET /questionBank/searchList */
+export async function searchQuestionBankList(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.searchQuestionBankListParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultListQuestionBankVo>('/questionBank/searchList', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 更新题库表信息 PUT /questionBank/update */
 export async function updateQuestionBank(
   body: API.QuestionBankUpdateReqDTO,

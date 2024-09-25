@@ -8,6 +8,15 @@ declare namespace API {
     msg?: string;
   };
 
+  type CommonResultListQuestionBankVo = {
+    /** 业务状态 */
+    code?: number;
+    /** 返回数据 */
+    data?: QuestionBankVo[];
+    /** 消息提示 */
+    msg?: string;
+  };
+
   type CommonResultListQuestionVo = {
     /** 业务状态 */
     code?: number;
@@ -34,14 +43,6 @@ declare namespace API {
     msg?: string;
   };
 
-  type CommonResultPageResultQuestionBankQuestionVo = {
-    /** 业务状态 */
-    code?: number;
-    data?: PageResultQuestionBankQuestionVo;
-    /** 消息提示 */
-    msg?: string;
-  };
-
   type CommonResultPageResultQuestionBankVo = {
     /** 业务状态 */
     code?: number;
@@ -62,22 +63,6 @@ declare namespace API {
     /** 业务状态 */
     code?: number;
     data?: PageResultUserVo;
-    /** 消息提示 */
-    msg?: string;
-  };
-
-  type CommonResultQuestionBankQuestionSimpleVo = {
-    /** 业务状态 */
-    code?: number;
-    data?: QuestionBankQuestionSimpleVo;
-    /** 消息提示 */
-    msg?: string;
-  };
-
-  type CommonResultQuestionBankQuestionVo = {
-    /** 业务状态 */
-    code?: number;
-    data?: QuestionBankQuestionVo;
     /** 消息提示 */
     msg?: string;
   };
@@ -144,11 +129,6 @@ declare namespace API {
     id: number;
   };
 
-  type deleteQuestionBankQuestionParams = {
-    /** 题库题目关联ID */
-    id: number;
-  };
-
   type deleteQuestionParams = {
     /** 题目ID */
     id: number;
@@ -159,26 +139,17 @@ declare namespace API {
     id: number;
   };
 
+  type getQuestionBankIdListParams = {
+    /** 题目id */
+    id: number;
+  };
+
   type getQuestionBankPageParams = {
     questionBankPageReqDTO: QuestionBankPageReqDTO;
   };
 
   type getQuestionBankParams = {
     /** 题库表ID */
-    id: number;
-  };
-
-  type getQuestionBankQuestionPageParams = {
-    questionbankquestionPageReqDTO: QuestionBankQuestionPageReqDTO;
-  };
-
-  type getQuestionBankQuestionParams = {
-    /** 题库题目关联ID */
-    id: number;
-  };
-
-  type getQuestionBankQuestionVOParams = {
-    /** 题库题目关联ID */
     id: number;
   };
 
@@ -250,13 +221,6 @@ declare namespace API {
     pageNo: number;
     /** 每页条数，最大值为 100 */
     pageSize: number;
-  };
-
-  type PageResultQuestionBankQuestionVo = {
-    /** 数据 */
-    list: QuestionBankQuestionVo[];
-    /** 总量 */
-    total: number;
   };
 
   type PageResultQuestionBankVo = {
@@ -344,62 +308,6 @@ declare namespace API {
   };
 
   type QuestionBankQuestionAddReqDTO = {
-    /** 题库 id */
-    questionBankId?: number;
-    /** 题目 id */
-    questionId?: number;
-    /** 题目顺序（题号） */
-    questionOrder?: number;
-    /** 创建用户 id */
-    userId?: number;
-  };
-
-  type QuestionBankQuestionPageReqDTO = {
-    /** 页码，从 1 开始 */
-    pageNo: number;
-    /** 每页条数，最大值为 100 */
-    pageSize: number;
-    /** id */
-    id?: number;
-    /** 题库 id */
-    questionBankId?: number;
-    /** 题目 id */
-    questionId?: number;
-    /** 题目顺序（题号） */
-    questionOrder?: number;
-    /** 创建用户 id */
-    userId?: number;
-  };
-
-  type QuestionBankQuestionSimpleVo = {
-    /** id */
-    id?: number;
-    /** 题库 id */
-    questionBankId?: number;
-    /** 题目 id */
-    questionId?: number;
-    /** 题目顺序（题号） */
-    questionOrder?: number;
-    /** 创建用户 id */
-    userId?: number;
-  };
-
-  type QuestionBankQuestionUpdateReqDTO = {
-    /** 题库 id */
-    questionBankId?: number;
-    /** 题目 id */
-    questionId?: number;
-    /** 题目顺序（题号） */
-    questionOrder?: number;
-    /** 创建用户 id */
-    userId?: number;
-    /** id */
-    id: number;
-  };
-
-  type QuestionBankQuestionVo = {
-    /** id */
-    id?: number;
     /** 题库 id */
     questionBankId?: number;
     /** 题目 id */
@@ -514,6 +422,10 @@ declare namespace API {
     title: string;
     /** 审核状态 */
     reviewStatus: number;
+    /** 题库id */
+    questionBankId?: number;
+    /** 题目列表 */
+    questionIdList?: number[];
   };
 
   type QuestionReviewReqDTO = {
@@ -616,6 +528,10 @@ declare namespace API {
 
   type resetUserPasswordParams = {
     userId: number;
+  };
+
+  type searchQuestionBankListParams = {
+    keyword: string;
   };
 
   type updateQuestionBank1Params = {
