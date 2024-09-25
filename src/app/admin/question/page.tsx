@@ -61,8 +61,11 @@ const fetch = (value: string, callback: Function) => {
       console.error(error);
     }
   };
-
-  timeout = setTimeout(fake, 300);
+  if (value) {
+    timeout = setTimeout(fake, 300);
+  } else {
+    callback([]);
+  }
 };
 
 /**
