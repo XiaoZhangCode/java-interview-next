@@ -14,6 +14,14 @@ export async function addUser(body: API.UserAddReqDTO, options?: { [key: string]
   });
 }
 
+/** 添加用户签到记录 POST /user/add/sign_in */
+export async function addUserSignIn(options?: { [key: string]: any }) {
+  return request<API.CommonResultBoolean>('/user/add/sign_in', {
+    method: 'POST',
+    ...(options || {}),
+  });
+}
+
 /** 删除用户 DELETE /user/delete */
 export async function deleteUser(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -48,6 +56,51 @@ export async function getUser(
 export async function getLoginUser(options?: { [key: string]: any }) {
   return request<API.CommonResultLoginUserVO>('/user/get/login', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 获取用户签到记录 GET /user/get/sign_in */
+export async function getUserSignInRecord(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserSignInRecordParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultMapLocalDateBoolean>('/user/get/sign_in', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 获取用户签到记录(最终) GET /user/get/sign_in/final */
+export async function getUserSignInRecordFinal(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserSignInRecordFinalParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultListInteger>('/user/get/sign_in/final', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** 获取用户签到记录(优化) GET /user/get/sign_in/optimize */
+export async function getUserSignInRecordOptimize(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserSignInRecordOptimizeParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultListInteger>('/user/get/sign_in/optimize', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
     ...(options || {}),
   });
 }

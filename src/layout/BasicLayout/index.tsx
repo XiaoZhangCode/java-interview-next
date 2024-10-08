@@ -1,4 +1,4 @@
-import {GithubFilled, LogoutOutlined,} from "@ant-design/icons";
+import {GithubFilled, LogoutOutlined, UserOutlined,} from "@ant-design/icons";
 import {Dropdown, message} from "antd";
 import React from "react";
 import Image from "next/image";
@@ -78,6 +78,14 @@ export default function BasicLayout({ children }: Props) {
                 menu={{
                   items: [
                     {
+                      key: "userCenter",
+                      icon: <UserOutlined />,
+                      label: "用户中心",
+                      onClick: ()=>{
+                        router.push("/user/center")
+                      }
+                    },
+                    {
                       key: "logout",
                       icon: <LogoutOutlined />,
                       label: "退出登录",
@@ -85,7 +93,7 @@ export default function BasicLayout({ children }: Props) {
                         const result = await logout();
                         if (result) {
                           message.success("退出成功！");
-                          window.location.href = "/user/login";
+                          router.replace("/user/login");
                         }
                       },
                     },

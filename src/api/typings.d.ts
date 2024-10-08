@@ -8,6 +8,15 @@ declare namespace API {
     msg?: string;
   };
 
+  type CommonResultListInteger = {
+    /** 业务状态 */
+    code?: number;
+    /** 返回数据 */
+    data?: number[];
+    /** 消息提示 */
+    msg?: string;
+  };
+
   type CommonResultListQuestionBankVo = {
     /** 业务状态 */
     code?: number;
@@ -39,6 +48,15 @@ declare namespace API {
     code?: number;
     /** 返回数据 */
     data?: number;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultMapLocalDateBoolean = {
+    /** 业务状态 */
+    code?: number;
+    /** 返回数据 */
+    data?: Record<string, any>;
     /** 消息提示 */
     msg?: string;
   };
@@ -192,6 +210,18 @@ declare namespace API {
 
   type getUserQuestionPageParams = {
     UserQuestionPageReqDTO: UserQuestionPageReqDTO;
+  };
+
+  type getUserSignInRecordFinalParams = {
+    year: number;
+  };
+
+  type getUserSignInRecordOptimizeParams = {
+    year: number;
+  };
+
+  type getUserSignInRecordParams = {
+    year: number;
   };
 
   type getUserVOParams = {
