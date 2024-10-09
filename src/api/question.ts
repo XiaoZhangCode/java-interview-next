@@ -136,6 +136,21 @@ export async function reviewQuestionBatch(
   });
 }
 
+/** es获取题目分页 POST /question/search/page/vo */
+export async function searchQuestionVoByPage(
+  body: API.UserQuestionPageReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultPageResultQuestionVo>('/question/search/page/vo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 更新题目信息 PUT /question/update */
 export async function updateQuestion(
   body: API.QuestionUpdateReqDTO,

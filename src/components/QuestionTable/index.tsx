@@ -2,7 +2,7 @@
 import type { ProColumns } from "@ant-design/pro-components";
 import { ProTable } from "@ant-design/pro-components";
 import React, { useEffect, useState } from "react";
-import { getUserQuestionPage } from "@/api/question";
+import { searchQuestionVoByPage } from "@/api/question";
 import TagList from "@/components/TagList/TagList";
 import { Card, Tag } from "antd";
 import Link from "next/link";
@@ -124,14 +124,12 @@ const QuestionTable = (props: Props) => {
           }
 
           const sortField = Object.keys(sort)?.[0];
-          const { data } = await getUserQuestionPage({
-            UserQuestionPageReqDTO: {
-              pageNo: params.current || 1,
-              pageSize: params.pageSize || 12,
-              title: defaultSearchParams?.title,
-              questionBankId: defaultSearchParams?.questionBankId,
-            },
-          });
+          const { data } = await searchQuestionVoByPage({
+            pageNo: params.current || 1,
+            pageSize: params.pageSize || 12,
+            title: defaultSearchParams?.title ?? params.title,
+            questionBankId: defaultSearchParams?.questionBankId,
+          } as API.UserQuestionPageReqDTO);
           setQuestionList(data.data?.list || []);
           setTotal(data.data?.total ?? 0);
           return {

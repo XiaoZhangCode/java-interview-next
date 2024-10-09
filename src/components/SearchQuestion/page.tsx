@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import QuestionTable from "@/components/QuestionTable";
 import "./index.css";
 import Search from "antd/lib/input/Search";
-import { getUserQuestionPage } from "@/api/question";
+import {getUserQuestionPage, searchQuestionVoByPage} from "@/api/question";
 import UserQuestionPageReqDTO = API.UserQuestionPageReqDTO;
 import QuestionVo = API.QuestionVo;
 
@@ -28,10 +28,10 @@ export default function SearchQuestion(props: Props) {
   const [value, setValue] = useState<string>(searchText);
 
   const handleSearch = async (value: string) => {
-    const res = await getUserQuestionPage({
-      UserQuestionPageReqDTO: {
-        title: value,
-      } as UserQuestionPageReqDTO,
+    const res = await searchQuestionVoByPage({
+        pageNo: 1,
+        pageSize: 12,
+        title: value
     });
     setSearchQuestionList(res.data.data?.list ?? []);
     setSearchTotal(res.data.data?.total ?? 0);

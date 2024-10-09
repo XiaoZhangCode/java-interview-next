@@ -1,5 +1,5 @@
 import React from "react";
-import { getUserQuestionPage } from "@/api/question";
+import { getUserQuestionPage, searchQuestionVoByPage } from "@/api/question";
 import "./index.css";
 import SearchQuestion from "@/components/SearchQuestion/page";
 import QuestionVo = API.QuestionVo;
@@ -16,12 +16,10 @@ export default async function SearchPage({ searchParams }) {
   let total = 0;
 
   try {
-    let questionPage = await getUserQuestionPage({
-      UserQuestionPageReqDTO: {
-        pageSize: 12,
-        pageNo: 1,
-        title: searchText as string,
-      },
+    let questionPage = await searchQuestionVoByPage({
+      pageSize: 12,
+      pageNo: 1,
+      title: searchText as string,
     });
     questionList = questionPage.data.data?.list ?? [];
     total = questionPage.data.data?.total ?? 0;

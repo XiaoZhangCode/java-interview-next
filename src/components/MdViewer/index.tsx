@@ -25,10 +25,12 @@ const MdViewer = (props: Props) => {
   const { value = "", theme = "channing-cyan" } = props;
   const viewerRef = useRef();
   useEffect(() => {
-    setTheme(theme);
-    // @ts-ignore
-    plugins[2].viewerEffect({ markdownBody: viewerRef.current });
-  }, [theme]);
+    if (viewerRef.current) {
+      setTheme(theme);
+      // @ts-ignore
+      plugins[2].viewerEffect({ markdownBody: viewerRef.current });
+    }
+  }, [theme, value]);
 
   return (
     // @ts-ignore
