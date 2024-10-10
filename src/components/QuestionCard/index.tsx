@@ -5,8 +5,7 @@ import MdViewer from "@/components/MdViewer";
 import "./index.css";
 import TagList from "@/components/TagList/TagList";
 import useAddUserSignInRecord from "@/hooks/useAddUserSignInRecord";
-import {addUserSignIn} from "@/api/user";
-import {useEffect} from "react";
+
 
 interface Props {
   question: API.QuestionVo;
