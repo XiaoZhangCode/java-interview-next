@@ -24,7 +24,7 @@ interface Props {
 const DetailModal: React.FC<Props> = (props) => {
   const { visible, onCancel } = props;
   const [questionDetail, setQuestionDetail] = useState<API.QuestionVo>();
-  const [themeValue, setThemeValue] = useState<string>("channing-cyan");
+  const [themeValue, setThemeValue] = useState<string>("juejin");
   const handleChange = (value: string) => {
     setThemeValue(value);
   };
@@ -43,7 +43,7 @@ const DetailModal: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    if (visible && props.id != 0) {
+    if (visible && props.id != "") {
       getQuestionDetail(props.id as string);
     }
   }, [visible]);
@@ -63,6 +63,8 @@ const DetailModal: React.FC<Props> = (props) => {
         open={visible}
         footer={null}
         onClose={() => {
+          setQuestionDetail(undefined);
+          setThemeValue("juejin")
           onCancel?.();
         }}
       >
@@ -237,10 +239,7 @@ const DetailModal: React.FC<Props> = (props) => {
                 }
                 bordered={true}
               >
-                <MdViewer
-                  value={questionDetail?.answer}
-                  theme={themeValue}
-                />
+                <MdViewer value={questionDetail?.answer} theme={themeValue} />
               </Card>
             </Col>
           </Row>

@@ -557,7 +557,10 @@ const QuestionAdminPage: React.FC = () => {
       <DetailModal
         id={currentDetailId}
         visible={detailModalVisible}
-        onCancel={() => setDetailModalVisible(false)}
+        onCancel={() => {
+          setCurrentDetailId("")
+          setDetailModalVisible(false)
+        }}
       />
 
       <UpdateQuestionBanksModal

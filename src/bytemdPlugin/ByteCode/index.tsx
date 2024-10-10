@@ -1,126 +1,165 @@
 import type { BytemdPlugin } from "bytemd";
-import hljs from "highlight.js";
-import ReactDOMServer from "react-dom/server";
-import "./index.css";
-import { message } from "antd";
+import { visit } from "unist-util-visit";
+import {message} from "antd";
 
-// 拷贝代码
-const copyToClipboard = (text: string) => navigator.clipboard.writeText(text);
-// 渲染页面元素
-export const renderEle = function (code: HTMLElement, key: number) {
-  let className: string = code.className;
-  if (!className ?? "") {
-    return;
+// 复制的方法,直接使用浏览器的 API 即可实现复制
+const copyToClipboard =  (text: string) => {
+  if (navigator.clipboard) {
+    try {
+       navigator.clipboard.writeText(text);
+      console.log("当前代码已复制到剪贴板");
+    } catch (err) {
+      console.error("复制代码失败，请手动复制");
+      console.error("复制失败!", err);
+    }
+  } else {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      message.success("已复制到剪贴板");
+    } catch (err) {
+      document.body.removeChild(textarea);
+      message.error("复制代码失败，请手动复制");
+      console.error("无法复制到剪贴板", err);
+    }
   }
-  // 使用正则表达式匹配以 "language-" 开头的类名
-  const match = className.match(/language-(.+)/);
-  // 如果匹配成功，提取语言部分并转换为大写
-  let lan = match ? match[1].toUpperCase() : "";
-  const parentNode: any = code.parentNode;
-  // 获取计算后的样式
-  const style = window.getComputedStyle(code);
-  // 获取背景色
-  const backgroundColor = style.backgroundColor;
-  parentNode.removeChild(code);
-  parentNode.innerHTML =
-    ReactDOMServer.renderToString(codeText(code, key, backgroundColor, lan)) +
-    '<code id="code-' +
-    key +
-    '"  class="' +
-    code.className +
-    '">' +
-    code.innerHTML +
-    "</code>";
-
-  let btn: any = document.getElementsByClassName(
-    "code-block-extension-copy-" + key,
-  )[0];
-  let timeoutID: any = null; // 用于存储 setTimeout 的 ID
-  const restoreText = () => {
-    btn.innerHTML = "复制代码";
-    btn.disable = false;
-  };
-  const timeout = () => {
-    timeoutID = setTimeout(restoreText, 3000); // 设置定时器，三秒后执行 restoreText 函数
-  };
-  btn.addEventListener("click", () => {
-    if (btn.disable) {
-      return;
-    }
-    clearTimeout(timeoutID); // 清除之前的定时器
-    copyToClipboard(code.innerText); // 执行复制操作
-    btn.innerHTML = "Copied"; // 立即更改按钮文本
-    btn.disable = true;
-    message.success({
-      content: "复制成功",
-    });
-    timeout(); // 设置新的定时器，三秒后恢复按钮文本
-  });
-
-  // 旋转隐藏code
-  let foldBtn: any = document.getElementsByClassName("foldBtn-" + key)[0];
-
-  // 最上层的父类的盒子阴影也去掉
-  let codeHeader: any = document.getElementsByClassName(
-    "code-header-" + key,
-  )[0];
-
-  foldBtn.addEventListener("click", () => {
-    let codeEle = document.getElementById("code-" + key);
-    codeEle?.classList.toggle("hidden");
-    foldBtn.classList.toggle("rotate90");
-    codeHeader.classList.toggle("boxShadowNone");
-  });
-
-  // document.querySelectorAll("code").forEach((el: any) => {
-  //   hljs.highlightElement(el);
-  // });
 };
 
-// innerHTML 布局
-const codeText: any = (
-  innerHTML: HTMLElement,
-  key: number,
-  backgroundColor: string,
-  lan: string,
-) => {
-  return (
-    <div
-      className={"code-block-extension-header code-header-" + key}
-      style={{ backgroundColor }}
-    >
-      <div className="code-block-extension-headerLeft">
-        <div className={"code-block-extension-foldBtn foldBtn-" + key}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M16.924 9.617A1 1 0 0 0 16 9H8a1 1 0 0 0-.707 1.707l4 4a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0 .217-1.09z"
-              data-name="Down"
-            ></path>
-          </svg>
-        </div>
-      </div>
-      <div className="code-block-extension-headerRight">
-        <span className="code-block-extension-lang">{lan}</span>
-        <span
-          className={
-            "code-block-extension-lang code-block-extension-copy code-block-extension-copy-" +
-            key
-          }
-        >
-          复制代码
-        </span>
-      </div>
-    </div>
-  );
-};
+// 一些图标
+const clipboardCheckIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-check"><path d="m12 15 2 2 4-4"/><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+const successTip = `<span style="font-size: 0.90em;">复制成功!</span>`;
+const foldBtn = `<svg t="1726055300369" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2293" width="1em" height="1em"><path d="M232 392L512 672l280-280z" fill="#707070" p-id="2294"></path></svg>`;
+const newSvgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2L2 12h10l0 10l10-10h-10z" /></svg>`;
 
-export default function code(): BytemdPlugin {
+export default function codeCopy(): BytemdPlugin {
   return {
-    viewerEffect({ markdownBody }): void | (() => void) {
-      const codes = markdownBody.querySelectorAll("code");
-      codes.forEach((code, key) => {
-        renderEle(code, key);
+    rehype: (processor) =>
+        processor.use(() => (tree: any) => {
+          visit(tree, "element", (node) => {
+            if (node.tagName === "pre") {
+              const codeNode = node.children.find((child: any) => child.tagName === "code");
+              const language =
+                  codeNode?.properties?.className
+                      ?.find((cls: any) => cls.startsWith("language-"))
+                      ?.replace("language-", "") || "text";
+
+              if (codeNode) {
+                node.children.unshift({
+                  type: "element",
+                  tagName: "div",
+                  properties: {
+                    className: ["code-block-extension-header"],
+                  },
+                  children: [
+                    {
+                      type: "element",
+                      tagName: "div",
+                      properties: {
+                        className: ["code-block-extension-headerLeft"],
+                      },
+                      children: [
+                        {
+                          type: "element",
+                          tagName: "div",
+                          properties: {
+                            className: ["code-block-extension-foldBtn"],
+                          },
+                          children: [
+                            {
+                              type: "text",
+                              value: "▼",
+                            },
+                          ],
+                        },
+                        {
+                          type: "element",
+                          tagName: "span",
+                          properties: {
+                            className: ["code-block-extension-lang"],
+                          },
+                          children: [{ type: "text", value: language }],
+                        },
+                      ],
+                    },
+                    {
+                      type: "element",
+                      tagName: "div",
+                      properties: {
+                        className: ["code-block-extension-headerRight"],
+                        style: "cursor: pointer;",
+                      },
+
+                      children: [
+                        {
+                          type: "element",
+                          tagName: "div",
+                          properties: {
+                            className: ["code-block-extension-copyCodeBtn"],
+                            style: "filter: invert(0.5); opacity: 0.6;",
+                          },
+                          children: [{ type: "text", value: "复制代码" }],
+                        },
+                      ],
+                    },
+                  ],
+                });
+
+                node.properties = {
+                  ...node.properties,
+                };
+              }
+            }
+          });
+        }),
+
+    viewerEffect({ markdownBody }) {
+      console.log("viewerEffect", markdownBody)
+      const copyButtons = markdownBody.querySelectorAll(".code-block-extension-copyCodeBtn");
+      const foldButtons = markdownBody.querySelectorAll(".code-block-extension-foldBtn");
+
+      copyButtons.forEach((button) => {
+        // @ts-ignore
+        button.onclick = function () {
+          const pre = button.closest("pre");
+          const code = pre?.querySelector("code")?.textContent || "";
+          copyToClipboard(code);
+
+          const tmp = button.innerHTML;
+          button.innerHTML = clipboardCheckIcon + successTip;
+          setTimeout(() => {
+            button.innerHTML = tmp;
+          }, 1500);
+        };
       });
-    }
+
+      // 处理折叠按钮的点击事件，实现旋转
+      foldButtons.forEach((foldButton) => {
+        // @ts-ignore
+        foldButton.onclick =  function () {
+          console.log("foldButton clicked")
+          foldButton.classList.toggle("code-block-extension-fold"); // 切换折叠类名
+          // 找到最近的 pre 标签
+          const pre = foldButton.closest("pre");
+          // 在 pre 标签下找到 code 标签
+          const code = pre?.querySelector("code");
+          // 切换 code 标签的类名
+          if (code) {
+            code.classList.toggle("code-block-extension-fold");
+          }
+
+          // 在 pre 标签下找到 code-block-extension-header
+          const headerElement = pre?.querySelector(".code-block-extension-header");
+
+          // 切换 code-block-extension-header 的类名
+          if (headerElement) {
+            headerElement.classList.toggle("code-block-extension-fold");
+          }
+        };
+      });
+    },
   };
 }
