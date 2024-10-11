@@ -11,7 +11,7 @@ import {
   Dropdown,
   MenuProps,
   message,
-  Modal,
+  Modal, Popconfirm,
   Select,
   SelectProps,
   Space,
@@ -94,7 +94,8 @@ const QuestionAdminPage: React.FC = () => {
   const [currentDetailId, setCurrentDetailId] = useState<string | number>("");
 
   // 是否显示修改所属题库窗口
-  const [updateQuestionBanksModalVisible, setUpdateQuestionBanksModalVisible] = useState<boolean>(false);
+  const [updateQuestionBanksModalVisible, setUpdateQuestionBanksModalVisible] =
+    useState<boolean>(false);
 
   // 题库信息
   const [data, setData] = useState<SelectProps["options"]>([]);
@@ -127,7 +128,7 @@ const QuestionAdminPage: React.FC = () => {
         setReviewModalVisible(true);
         break;
       case MenuKey.detail:
-        setCurrentDetailId(record.id as number)
+        setCurrentDetailId(record.id as number);
         setDetailModalVisible(true);
         break;
       case MenuKey.bank:
@@ -426,6 +427,67 @@ const QuestionAdminPage: React.FC = () => {
             setMySelectedRowKeys([...selectedRowKeys]);
           },
         }}
+        tableAlertRender={({
+          selectedRowKeys,
+          selectedRows,
+          onCleanSelected,
+        }) => {
+          return (
+            <Space size={24}>
+              <span>
+                已选 {selectedRowKeys.length} 项
+                <a style={{ marginInlineStart: 8 }} onClick={onCleanSelected}>
+                  取消选择
+                </a>
+              </span>
+            </Space>
+          );
+        }}
+        tableAlertOptionRender={({
+          selectedRowKeys,
+          selectedRows,
+          onCleanSelected,
+        }) => {
+          return (
+            <Space size={16}>
+              <Button
+                onClick={() => {
+                  // 打开弹窗
+                }}
+              >
+                批量向题库添加题目
+              </Button>
+              <Button
+                onClick={() => {
+                  // 打开弹窗
+                }}
+              >
+                批量从题库移除题目
+              </Button>
+              <Popconfirm
+                title="确认删除"
+                description="你确定要删除这些题目么？"
+                onConfirm={() => {
+                  // 批量删除题目
+                }}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button danger>批量删除题目</Button>
+              </Popconfirm>
+              <Button
+                  key="default"
+                  onClick={() => {
+                    setMySelectedRowKeys(selectedRowKeys)
+                    setReviewBatchModalVisible(true);
+                  }}
+              >
+                <CheckSquareOutlined />
+                一键审核
+              </Button>
+            </Space>
+          );
+        }}
         toolBarRender={() => [
           <Button
             type="primary"
@@ -435,19 +497,6 @@ const QuestionAdminPage: React.FC = () => {
             }}
           >
             <PlusOutlined /> 新建
-          </Button>,
-          <Button
-            // @ts-ignore
-            disabled={
-              mySelectedRowKeys?.length ? 0 : mySelectedRowKeys?.length === 0
-            }
-            key="default"
-            onClick={() => {
-              setReviewBatchModalVisible(true);
-            }}
-          >
-            <CheckSquareOutlined />
-            一键审核
           </Button>,
         ]}
         request={async (params, sort, filter) => {
@@ -547,7 +596,7 @@ const QuestionAdminPage: React.FC = () => {
             if (success) {
               setLoading(false);
               setMySelectedRowKeys([]);
-              setCurrentDetailId('')
+              setCurrentDetailId("");
               setReviewBatchModalVisible(false);
               actionRef.current?.reload();
             }
@@ -558,18 +607,18 @@ const QuestionAdminPage: React.FC = () => {
         id={currentDetailId}
         visible={detailModalVisible}
         onCancel={() => {
-          setCurrentDetailId("")
-          setDetailModalVisible(false)
+          setCurrentDetailId("");
+          setDetailModalVisible(false);
         }}
       />
 
       <UpdateQuestionBanksModal
-          questionId={currentRow?.id}
-          visible={updateQuestionBanksModalVisible}
-          onCancel={() => {
-            setCurrentRow(undefined)
-            setUpdateQuestionBanksModalVisible(false)
-          }}
+        questionId={currentRow?.id}
+        visible={updateQuestionBanksModalVisible}
+        onCancel={() => {
+          setCurrentRow(undefined);
+          setUpdateQuestionBanksModalVisible(false);
+        }}
       />
     </PageContainer>
   );
