@@ -19,7 +19,7 @@ interface UserValue {
   value: string;
 }
 
-async function fetchUserList(keyword: string): Promise<UserValue[]> {
+export async function fetchUserList(keyword: string): Promise<UserValue[]> {
   // @ts-ignore
   return searchQuestionBankList({
     keyword,

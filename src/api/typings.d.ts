@@ -348,6 +348,20 @@ declare namespace API {
     userId?: number;
   };
 
+  type QuestionBankQuestionBatchRemoveReqDTO = {
+    /** 题目id列表 */
+    questionIds: number[];
+    /** 题库id列表 */
+    questionBankIds: number[];
+  };
+
+  type QuestionBankQuestionBatchReqDTO = {
+    /** 题目id列表 */
+    questionIds: number[];
+    /** 题库id */
+    questionBankIds: number[];
+  };
+
   type QuestionBankReviewReqDTO = {
     /** id */
     id?: number;
@@ -438,6 +452,11 @@ declare namespace API {
     /** 审核信息 */
     reviewMessage: string;
     /** 题目id */
+    idList: number[];
+  };
+
+  type QuestionDeleteReqDTO = {
+    /** 题目id列表 */
     idList: number[];
   };
 

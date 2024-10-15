@@ -14,6 +14,21 @@ export async function addQuestion(body: API.QuestionAddReqDTO, options?: { [key:
   });
 }
 
+/** 批量向题库添加题目 POST /question/add/batch */
+export async function batchAddQuestionsToBank(
+  body: API.QuestionBankQuestionBatchReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/question/add/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 删除题目 DELETE /question/delete */
 export async function deleteQuestion(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -25,6 +40,21 @@ export async function deleteQuestion(
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+/** 批量删除题目 POST /question/delete/batch */
+export async function batchDeleteQuestions(
+  body: API.QuestionDeleteReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/question/delete/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
@@ -102,6 +132,21 @@ export async function getQuestionPage(
       questionPageReqDTO: undefined,
       ...params['questionPageReqDTO'],
     },
+    ...(options || {}),
+  });
+}
+
+/** 批量向题库移除题目 POST /question/remove/batch */
+export async function batchRemoveQuestionsFromBank(
+  body: API.QuestionBankQuestionBatchRemoveReqDTO,
+  options?: { [key: string]: any },
+) {
+  return request<API.CommonResultBoolean>('/question/remove/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

@@ -11,7 +11,8 @@ import {
   Dropdown,
   MenuProps,
   message,
-  Modal, Popconfirm,
+  Modal,
+  Popconfirm,
   Select,
   SelectProps,
   Space,
@@ -19,6 +20,7 @@ import {
 } from "antd";
 import React, { useRef, useState } from "react";
 import {
+  batchDeleteQuestions,
   deleteQuestion,
   getQuestionPage,
   reviewQuestionBatch,
@@ -32,6 +34,8 @@ import DetailModal from "@/app/admin/question/components/DetailModal";
 import { searchQuestionBankList } from "@/api/questionBank";
 import QuestionBankVo = API.QuestionBankVo;
 import UpdateQuestionBanksModal from "@/app/admin/question/components/UpdateQuestionBanksModal";
+import BatchAddQuestionsToBankModal from "@/app/admin/question/components/BatchAddQuestionToBankModal";
+import BatchRemoveQuestionsToBankModal from "@/app/admin/question/components/BatchRemoveQuestionToBankModal";
 
 let timeout: ReturnType<typeof setTimeout> | null;
 let currentValue: string;
@@ -91,6 +95,12 @@ const QuestionAdminPage: React.FC = () => {
   const [reviewModalVisible, setReviewModalVisible] = useState<boolean>(false);
   // detail组件显示
   const [detailModalVisible, setDetailModalVisible] = useState<boolean>(false);
+  // batchAddQuestionsToBankModalVisible
+  const [batchAddQuestionsToBankModalVisible, setBatchAddQuestionsToBankModalVisible] = useState<boolean>(false);
+
+  // batchRemoveQuestionsToBankModalVisible
+  const [batchRemoveQuestionsToBankModalVisible, setBatchRemoveQuestionsToBankModalVisible] = useState<boolean>(false);
+
   const [currentDetailId, setCurrentDetailId] = useState<string | number>("");
 
   // 是否显示修改所属题库窗口
@@ -453,6 +463,7 @@ const QuestionAdminPage: React.FC = () => {
               <Button
                 onClick={() => {
                   // 打开弹窗
+                  setBatchAddQuestionsToBankModalVisible(true);
                 }}
               >
                 批量向题库添加题目
@@ -460,6 +471,7 @@ const QuestionAdminPage: React.FC = () => {
               <Button
                 onClick={() => {
                   // 打开弹窗
+                  setBatchRemoveQuestionsToBankModalVisible(true);
                 }}
               >
                 批量从题库移除题目
@@ -467,8 +479,22 @@ const QuestionAdminPage: React.FC = () => {
               <Popconfirm
                 title="确认删除"
                 description="你确定要删除这些题目么？"
-                onConfirm={() => {
-                  // 批量删除题目
+                onConfirm={async () => {
+                  try {
+                    // 批量删除题目
+                    const result = await batchDeleteQuestions({
+                      idList: selectedRowKeys as number[],
+                    });
+                    if (result.data.code === 0) {
+                      message.success("删除成功");
+                      actionRef.current?.reload();
+                      setMySelectedRowKeys([]);
+                    } else {
+                      message.error(result.data.msg);
+                    }
+                  } catch (e: any) {
+                    message.error(e.message);
+                  }
                 }}
                 okText="Yes"
                 cancelText="No"
@@ -476,11 +502,11 @@ const QuestionAdminPage: React.FC = () => {
                 <Button danger>批量删除题目</Button>
               </Popconfirm>
               <Button
-                  key="default"
-                  onClick={() => {
-                    setMySelectedRowKeys(selectedRowKeys)
-                    setReviewBatchModalVisible(true);
-                  }}
+                key="default"
+                onClick={() => {
+                  setMySelectedRowKeys(selectedRowKeys);
+                  setReviewBatchModalVisible(true);
+                }}
               >
                 <CheckSquareOutlined />
                 一键审核
@@ -620,6 +646,36 @@ const QuestionAdminPage: React.FC = () => {
           setUpdateQuestionBanksModalVisible(false);
         }}
       />
+
+      <BatchAddQuestionsToBankModal
+        questionIdList={mySelectedRowKeys as number[]}
+        visible={batchAddQuestionsToBankModalVisible}
+        onCancel={() => {
+          setBatchAddQuestionsToBankModalVisible(false);
+          actionRef.current?.reload();
+        }}
+        onSubmit={() => {
+          setMySelectedRowKeys([]);
+          setBatchAddQuestionsToBankModalVisible(false);
+          actionRef.current?.reload();
+        }}
+      >
+      </BatchAddQuestionsToBankModal>
+
+      <BatchRemoveQuestionsToBankModal
+          questionIdList={mySelectedRowKeys as number[]}
+          visible={batchRemoveQuestionsToBankModalVisible}
+          onCancel={() => {
+            setBatchRemoveQuestionsToBankModalVisible(false);
+            actionRef.current?.reload();
+          }}
+          onSubmit={() => {
+            setMySelectedRowKeys([]);
+            setBatchRemoveQuestionsToBankModalVisible(false);
+            actionRef.current?.reload();
+          }}
+      >
+      </BatchRemoveQuestionsToBankModal>
     </PageContainer>
   );
 };
