@@ -8,6 +8,8 @@ import { setLoginUser } from "@/stores/loginUser";
 import { usePathname, useRouter } from "next/navigation";
 import AccessLayout from "@/access/AccessLayout";
 import FullLayout from "@/layout/FullLayout";
+import LoadingWrapper from "@/components/LoadingWrapper";
+import { useRouteLoading } from "@/hooks/useRouteLoading";
 import "./globals.css";
 
 /**
@@ -22,6 +24,9 @@ const InitLayout: React.FC<
   let dispatch = useDispatch<AppDispatch>();
   let pathname = usePathname();
   const router = useRouter();
+
+  // 使用路由加载状态管理
+  useRouteLoading();
 
   // 全局初始化 函数
   const doInitLoginUser = useCallback(async () => {
@@ -63,9 +68,11 @@ export default function RootLayout({
         <AntdRegistry>
           <Provider store={store}>
             <InitLayout>
-              <FullLayout>
-                <AccessLayout>{children}</AccessLayout>
-              </FullLayout>
+              <LoadingWrapper>
+                <FullLayout>
+                  <AccessLayout>{children}</AccessLayout>
+                </FullLayout>
+              </LoadingWrapper>
             </InitLayout>
           </Provider>
         </AntdRegistry>

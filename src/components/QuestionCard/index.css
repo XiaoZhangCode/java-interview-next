@@ -1,0 +1,85 @@
+.question-card {
+  width: 100%;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 8px 0;
+}
+
+.action-item:hover {
+  color: #1890ff;
+}
+
+.action-item.hover {
+  color: #1890ff;
+}
+
+.action-item.hover img {
+  filter: brightness(0) saturate(100%) invert(39%) sepia(57%) saturate(2000%) hue-rotate(202deg) brightness(97%) contrast(96%);
+}
+
+.action-item.active {
+  color: #ff4d4f;
+}
+
+.action-item.active img {
+  filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2476%) hue-rotate(346deg) brightness(118%) contrast(119%);
+}
+
+.answer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 评论相关样式 */
+.comment-input {
+  margin-bottom: 16px;
+}
+
+.comment-submit {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.comment-list {
+  margin-top: 16px;
+}
+
+.comment-time {
+  color: #999;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.reply-input {
+  margin-top: 8px;
+  padding-left: 8px;
+  border-left: 2px solid #f0f0f0;
+}
+
+.reply-submit {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.comment-children {
+  margin-top: 8px;
+  margin-left: 32px;
+}
+
+.comment-children .ant-list-item {
+  padding: 8px 0;
+}
+
+.comment-children .ant-list-item-meta {
+  margin-bottom: 0;
+}
