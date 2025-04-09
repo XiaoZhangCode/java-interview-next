@@ -1,9 +1,108 @@
 declare namespace API {
+  type CommentAddReqDTO = {
+    /** 评论用户id */
+    userId?: number;
+    /** 题目id */
+    questionId?: number;
+    /** 评论内容 */
+    content: string;
+    /** 父评论id，用于回复功能 */
+    parentId: number;
+    /** 点赞数 */
+    likeNum?: number;
+  };
+
+  type CommentPageReqDTO = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
+    /** id */
+    id?: number;
+    /** 评论用户id */
+    userId?: number;
+    /** 题目id */
+    questionId?: number;
+    /** 评论内容 */
+    content: string;
+    /** 父评论id，用于回复功能 */
+    parentId: number;
+    /** 点赞数 */
+    likeNum?: number;
+  };
+
+  type CommentSimpleVo = {
+    /** id */
+    id?: number;
+    /** 评论用户id */
+    userId?: number;
+    /** 题目id */
+    questionId?: number;
+    /** 评论内容 */
+    content?: string;
+    /** 父评论id，用于回复功能 */
+    parentId: number;
+    /** 点赞数 */
+    likeNum?: number;
+  };
+
+  type CommentVo = {
+    /** id */
+    id?: number;
+    /** 评论用户id */
+    userId?: number;
+    /** 题目id */
+    questionId?: number;
+    /** 评论内容 */
+    content?: string;
+    /** 父评论id，用于回复功能 */
+    parentId: number;
+    /** 点赞数 */
+    likeNum?: number;
+    /** 当前登录用户是否点赞此评论 */
+    isLiked?: boolean;
+    /** 用户名称 */
+    username?: string;
+    /** 用户头像 */
+    userAvatar?: string;
+    /** 创建时间 */
+    createTime?: string;
+    /** 回复人名称 */
+    replyUserName?: string;
+    /** 回复人头像 */
+    replyUserAvatar?: string;
+  };
+
   type CommonResultBoolean = {
     /** 业务状态 */
     code?: number;
     /** 返回数据 */
     data?: boolean;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultCommentSimpleVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: CommentSimpleVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultCommentVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: CommentVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultListCommentVo = {
+    /** 业务状态 */
+    code?: number;
+    /** 返回数据 */
+    data?: CommentVo[];
     /** 消息提示 */
     msg?: string;
   };
@@ -61,6 +160,14 @@ declare namespace API {
     msg?: string;
   };
 
+  type CommonResultPageResultCommentVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: PageResultCommentVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
   type CommonResultPageResultQuestionBankVo = {
     /** 业务状态 */
     code?: number;
@@ -73,6 +180,14 @@ declare namespace API {
     /** 业务状态 */
     code?: number;
     data?: PageResultQuestionVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultPageResultThumbVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: PageResultThumbVo;
     /** 消息提示 */
     msg?: string;
   };
@@ -126,6 +241,22 @@ declare namespace API {
     msg?: string;
   };
 
+  type CommonResultThumbSimpleVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: ThumbSimpleVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
+  type CommonResultThumbVo = {
+    /** 业务状态 */
+    code?: number;
+    data?: ThumbVo;
+    /** 消息提示 */
+    msg?: string;
+  };
+
   type CommonResultUserSimpleVo = {
     /** 业务状态 */
     code?: number;
@@ -154,6 +285,32 @@ declare namespace API {
 
   type deleteUserParams = {
     /** 用户ID */
+    id: number;
+  };
+
+  type FavouriteAddReqDTO = {
+    /** 用户id */
+    userId?: number;
+    /** 题目id */
+    questionId: number;
+  };
+
+  type getCommentListByQuestionIdParams = {
+    /** 题目Id */
+    questionId: number;
+  };
+
+  type getCommentPageParams = {
+    commentPageReqDTO: CommentPageReqDTO;
+  };
+
+  type getCommentParams = {
+    /** 评论表ID */
+    id: number;
+  };
+
+  type getCommentVOParams = {
+    /** 评论表ID */
     id: number;
   };
 
@@ -192,6 +349,20 @@ declare namespace API {
 
   type getQuestionVOParams = {
     /** 题目ID */
+    id: number;
+  };
+
+  type getThumbPageParams = {
+    thumbPageReqDTO: ThumbPageReqDTO;
+  };
+
+  type getThumbParams = {
+    /** 点赞表ID */
+    id: number;
+  };
+
+  type getThumbVOParams = {
+    /** 点赞表ID */
     id: number;
   };
 
@@ -253,6 +424,13 @@ declare namespace API {
     pageSize: number;
   };
 
+  type PageResultCommentVo = {
+    /** 数据 */
+    list: CommentVo[];
+    /** 总量 */
+    total: number;
+  };
+
   type PageResultQuestionBankVo = {
     /** 数据 */
     list: QuestionBankVo[];
@@ -263,6 +441,13 @@ declare namespace API {
   type PageResultQuestionVo = {
     /** 数据 */
     list: QuestionVo[];
+    /** 总量 */
+    total: number;
+  };
+
+  type PageResultThumbVo = {
+    /** 数据 */
+    list: ThumbVo[];
     /** 总量 */
     total: number;
   };
@@ -507,6 +692,10 @@ declare namespace API {
     thumbNum?: number;
     /** 收藏数 */
     favourNum?: number;
+    /** 当前用户的点赞状态 */
+    thumbStatus?: boolean;
+    /** 当前用户的收藏状态 */
+    favourStatus?: boolean;
   };
 
   type QuestionUpdateReqDTO = {
@@ -581,6 +770,52 @@ declare namespace API {
 
   type searchQuestionBankListParams = {
     keyword: string;
+  };
+
+  type ThumbAddReqDTO = {
+    /** 用户id */
+    userId?: number;
+    /** 目标id（题目id或评论id） */
+    targetId: number;
+    /** 目标类型：0-题目，1-评论 */
+    targetType: string;
+  };
+
+  type ThumbPageReqDTO = {
+    /** 页码，从 1 开始 */
+    pageNo: number;
+    /** 每页条数，最大值为 100 */
+    pageSize: number;
+    /** id */
+    id?: number;
+    /** 用户id */
+    userId?: number;
+    /** 目标id（题目id或评论id） */
+    targetId?: number;
+    /** 目标类型：0-题目，1-评论 */
+    targetType?: string;
+  };
+
+  type ThumbSimpleVo = {
+    /** id */
+    id?: number;
+    /** 用户id */
+    userId?: number;
+    /** 目标id（题目id或评论id） */
+    targetId?: number;
+    /** 目标类型：0-题目，1-评论 */
+    targetType?: string;
+  };
+
+  type ThumbVo = {
+    /** id */
+    id?: number;
+    /** 用户id */
+    userId?: number;
+    /** 目标id（题目id或评论id） */
+    targetId?: number;
+    /** 目标类型：0-题目，1-评论 */
+    targetType?: string;
   };
 
   type updateQuestionBank1Params = {

@@ -5,6 +5,7 @@ import { getQuestionVo } from "@/api/question";
 import { Content } from "antd/lib/layout/layout";
 import QuestionCard from "@/components/QuestionCard";
 import QuestionVo = API.QuestionVo;
+import QuestionSimpleVo = API.QuestionSimpleVo;
 
 // @ts-ignore
 export default async function QuestionPage({ params }) {
@@ -28,7 +29,7 @@ export default async function QuestionPage({ params }) {
     <div id="bankQuestionPage" className="max-width-content">
       <Flex gap={24}>
         <Content>
-          <QuestionCard question={question as QuestionVo} />
+          <QuestionCard question={question as QuestionSimpleVo} />
         </Content>
       </Flex>
     </div>
